@@ -107,14 +107,14 @@ function draw_line() {
     this.points = new Array();
     this.line_thickness = 3;
     this.color = 0x5c6274;
-    this.precise = 3;
+    this.precise = true;
 
     this.add_point = function(point) {
-        if (this.precise < 2 || this.points.length == 0) {
+        if (!this.precise || this.points.length == 0) {
             this.points[this.points.length] = point;
         } else {
             var last_point = this.points[this.points.length - 1];
-            var inter_points = this.sub_points(last_point, point, this.precise);
+            var inter_points = this.sub_points(last_point, point);
 
             for (var i = 0; i < inter_points.length; i++) {
                 this.points[this.points.length] = inter_points[i];
@@ -122,16 +122,19 @@ function draw_line() {
         }
     }
 
-    this.sub_points = function(last_point, point, precision) {
+    this.sub_points = function(last_point, point) {
         var mid = new PIXI.Point((point.x + last_point.x) / 2, (point.y + last_point.y) / 2);
+        var xdiff = point.x - last_point.x;
+        var ydiff = point.y - last_point.y;
+        var length = Math.sqrt((xdiff * xdiff) + (ydiff * ydiff));
 
-        if (precision == 2) {
+        if (length < 80) {
             var all_points = new Array();
             all_points[0] = mid;
             all_points[1] = point;
         } else {
-            var low = this.sub_points(last_point, mid, precision - 1);
-            var high = this.sub_points(mid, point, precision - 1);
+            var low = this.sub_points(last_point, mid);
+            var high = this.sub_points(mid, point);
             all_points = low.concat(high);
         }
         

@@ -5,9 +5,6 @@ built-in shapes (square, rectangle, circle)
     and partially for every frame, as usual
 animations...bleh how
 colors. per line? per shape? per geometry?
-deformation (precision?) is proportionate to line length
-    short lines have less recursion
-    long lines have lotssssss
 can you combine 2d and 3d under the same geometry stuff?
 fill 2d shape with texture? paper texture? eek that sounds tough
 
