@@ -1,0 +1,31 @@
+***APPROACH ALL OF THESE AS IF YOU'RE GOING TO RELEASE THIS***
+even if you don't, it'll make everything easier
+
+geometry hierarchy system
+matrix transformations
+built-in shapes (square, rectangle, circle)
+    these will deform partially during startup
+    and partially for every frame, as usual
+animations...bleh how
+colors. per line? per shape? per geometry?
+deformation (precision?) is proportionate to line length
+    short lines have less recursion
+    long lines have lotssssss
+can you combine 2d and 3d under the same geometry stuff?
+fill 2d shape with texture? paper texture? eek that sounds tough
+
+DEMO IDEA...I LIKE THIS
+go back to graphics hw and find wireframe renderer
+make this demo start in 2d
+then the character can draw or build
+he can turn shapes 3d (wireframe modez)
+now 3d things can rotate, 2d things stay still
+**different colored backgrounds for different environments
+
+HOW DOES THIS ALL FIT INTO CHALK TALK??
+story telling?
+game making?
+
+random thought, but chalk talk package manager...
+repo at url should contain image, description, etc
+voting and ranking system
