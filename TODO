@@ -1,6 +1,3 @@
-***APPROACH ALL OF THESE AS IF YOU'RE GOING TO RELEASE THIS***
-even if you don't, it'll make everything easier
-
 geometry hierarchy system
 matrix transformations
 built-in shapes (square, rectangle, circle)
@@ -21,11 +18,3 @@ then the character can draw or build
 he can turn shapes 3d (wireframe modez)
 now 3d things can rotate, 2d things stay still
 **different colored backgrounds for different environments
-
-HOW DOES THIS ALL FIT INTO CHALK TALK??
-story telling?
-game making?
-
-random thought, but chalk talk package manager...
-repo at url should contain image, description, etc
-voting and ranking system
