@@ -33,9 +33,11 @@ next_bg = () ->
 
     paper_sprite.setTexture paper_textures[paper_current]
 
-house = new draw_polygon
+house = null
 init_house = () ->
-    body = new draw_line
+    house = new window.draw_polygon
+    
+    body = new window.draw_line
     body.add_point new PIXI.Point 400, 300
     body.add_point new PIXI.Point 494, 295
     body.add_point new PIXI.Point 500, 404
@@ -43,22 +45,24 @@ init_house = () ->
     body.add_point new PIXI.Point 400, 300
     house.add_line body
 
-    roof = new draw_line
+    roof = new window.draw_line
     roof.add_point new PIXI.Point 400, 300
     roof.add_point new PIXI.Point 450, 250
     roof.add_point new PIXI.Point 494, 295
     roof.add_point new PIXI.Point 400, 300
     house.add_line roof
 
-    door = new draw_line
+    door = new window.draw_line
     door.add_point new PIXI.Point 435, 400
     door.add_point new PIXI.Point 435, 325
     door.add_point new PIXI.Point 465, 325
     door.add_point new PIXI.Point 465, 400
     house.add_line door
 
-ground = new draw_line
+ground = null
 init_ground = () ->
+    ground = new window.draw_line
+    
     ground.add_point new PIXI.Point 0, 400
     ground.add_point new PIXI.Point 688, 405
 
