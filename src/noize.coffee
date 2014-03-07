@@ -116,11 +116,36 @@ render_graphics = () ->
         project_point point0, a
         project_point point1, b
 
-        draw_line a[0], a[1], b[0], b[1]
+        draw_line new PIXI.Point(a[0], a[1]), new PIXI.Point(b[0], b[1])
 
-draw_line = (x1, y1, x2, y2) ->
-    graphics.moveTo x1 + noise(), y1 + noise()
-    graphics.lineTo x2 + noise(), y2 + noise()
+sub_points = (last_point, point) ->
+    mid = new PIXI.Point (point.x + last_point.x) / 2, (point.y + last_point.y) / 2
+    length = distance last_point, point
+
+    all_points = null
+    if length < 80
+        all_points = new Array
+        all_points.push mid
+        all_points.push point
+    else
+        low = sub_points last_point, mid
+        high = sub_points mid, point
+        all_points = low.concat high
+
+    all_points
+
+distance = (p1, p2) ->
+    xdiff = p1.x - p2.x
+    ydiff = p1.y - p2.y
+    Math.sqrt (xdiff * xdiff) + (ydiff * ydiff)
+
+draw_line = (p1, p2) ->
+    graphics.moveTo p1.x + noise(), p1.y + noise()
+
+    inter_points = sub_points p1, p2
+
+    for i in [1...inter_points.length]
+        graphics.lineTo inter_points[i].x + noise(), inter_points[i].y + noise()
 
 project_point = (xyz, pxy) ->
     x = xyz[0]
