@@ -1,6 +1,32 @@
 stage = new PIXI.Stage 0xFFFFFF
-renderer = new PIXI.WebGLRenderer 688, 480, null, null, true
+
+w = 688
+h = 480
+fl = 10.0
+
+renderer = new PIXI.WebGLRenderer w, h, null, null, true
 graphics = new PIXI.Graphics
+
+point0 = [0...3].map (i) -> 0.0
+point1 = [0...3].map (i) -> 0.0
+a = [0...2].map (i) -> 0
+b = [0...2].map (i) -> 0
+
+vertices = [
+    [ -1,-1,-1], [ 1,-1,-1], [-1, 1,-1], [1, 1,-1],
+    [ -1,-1, 1], [ 1,-1, 1], [-1, 1, 1], [1, 1, 1],
+    [ 0, 0, 0]
+]
+
+edges = [
+    [0,1],[2,3],[4,5],[6,7],
+    [0,2],[1,3],[4,6],[5,7],
+    [0,4],[1,5],[2,6],[3,7],
+]
+
+cube = new DRAW.shape vertices, edges
+t = new UTIL.matrix
+
 init = () ->
     document.body.appendChild renderer.view
 
@@ -35,9 +61,9 @@ next_bg = () ->
 
 house = null
 init_house = () ->
-    house = new window.draw_polygon
-    
-    body = new window.draw_line
+    house = new DRAW.polygon
+
+    body = new DRAW.line
     body.add_point new PIXI.Point 400, 300
     body.add_point new PIXI.Point 494, 295
     body.add_point new PIXI.Point 500, 404
@@ -45,14 +71,14 @@ init_house = () ->
     body.add_point new PIXI.Point 400, 300
     house.add_line body
 
-    roof = new window.draw_line
+    roof = new DRAW.line
     roof.add_point new PIXI.Point 400, 300
     roof.add_point new PIXI.Point 450, 250
     roof.add_point new PIXI.Point 494, 295
     roof.add_point new PIXI.Point 400, 300
     house.add_line roof
 
-    door = new window.draw_line
+    door = new DRAW.line
     door.add_point new PIXI.Point 435, 400
     door.add_point new PIXI.Point 435, 325
     door.add_point new PIXI.Point 465, 325
@@ -61,8 +87,8 @@ init_house = () ->
 
 ground = null
 init_ground = () ->
-    ground = new window.draw_line
-    
+    ground = new DRAW.line
+
     ground.add_point new PIXI.Point 0, 400
     ground.add_point new PIXI.Point 688, 405
 
@@ -75,5 +101,35 @@ render_graphics = () ->
     house.render graphics
     ground.render graphics
     next_bg()
+
+    t.identity()
+    t.rotate_y 0.05
+    cube.get_matrix().right_multiply t
+
+    for e in [0...cube.get_edges().length]
+        i = cube.get_edge e, 0
+        j = cube.get_edge e, 1
+
+        cube.get_matrix().transform cube.get_vertices(i), point0
+        cube.get_matrix().transform cube.get_vertices(j), point1
+
+        project_point point0, a
+        project_point point1, b
+
+        draw_line a[0], a[1], b[0], b[1]
+
+draw_line = (x1, y1, x2, y2) ->
+    graphics.moveTo x1 + noise(), y1 + noise()
+    graphics.lineTo x2 + noise(), y2 + noise()
+
+project_point = (xyz, pxy) ->
+    x = xyz[0]
+    y = xyz[1]
+    z = xyz[2]
+
+    pxy[0] = w / 2 + (h * x / (fl - z))
+    pxy[1] = h / 2 + (h * y / (fl - z))
+
+noise = () -> (Math.random() - 0.5) * 2
 
 init()

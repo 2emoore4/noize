@@ -1,4 +1,6 @@
-class window.draw_line
+window.DRAW = {}
+
+class DRAW.line
     constructor: ->
         @points = new Array
         @line_thickness = 3
@@ -36,10 +38,10 @@ class window.draw_line
         start = @points[0]
         graphics.moveTo start.x + noise(), start.y + noise()
 
-        for i in [1..@points.length - 1]
+        for i in [1...@points.length]
             graphics.lineTo @points[i].x + noise(), @points[i].y + noise()
 
-class window.draw_polygon
+class DRAW.polygon
     constructor: ->
         @lines = new Array
 
@@ -48,6 +50,16 @@ class window.draw_polygon
 
     render: (graphics) ->
         line.render graphics for line in @lines
+
+class DRAW.shape
+    constructor: (@vertices, @edges) ->
+        @matrix = new UTIL.matrix
+        @matrix.identity()
+
+    get_edge: (i, j) -> @edges[i][j]
+    get_edges: () -> @edges
+    get_vertices: (i) -> @vertices[i]
+    get_matrix: () -> @matrix
 
 distance = (p1, p2) ->
     xdiff = p1.x - p2.x
