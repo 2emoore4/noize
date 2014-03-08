@@ -138,9 +138,8 @@ sub_points = (last_point, point) ->
     length = distance last_point, point
 
     all_points = null
-    if length < 80
+    if length < 50
         all_points = new Array
-        all_points.push mid
         all_points.push point
     else
         low = sub_points last_point, mid
@@ -159,7 +158,7 @@ draw_line = (p1, p2) ->
 
     inter_points = sub_points p1, p2
 
-    for i in [1...inter_points.length]
+    for i in [0...inter_points.length]
         graphics.lineTo inter_points[i].x + noise(), inter_points[i].y + noise()
 
 project_point = (xyz, pxy) ->
