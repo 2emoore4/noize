@@ -53,8 +53,8 @@ class DRAW.polygon
 
 class DRAW.shape
     constructor: (@vertices, @edges) ->
-        @matrix = new UTIL.matrix
-        @matrix.identity()
+        @matrix = mat4.create()
+        mat4.identity @matrix
 
     get_edge: (i, j) -> @edges[i][j]
     get_edges: () -> @edges

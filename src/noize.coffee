@@ -25,7 +25,7 @@ edges = [
 ]
 
 cube = new DRAW.shape vertices, edges
-t = new UTIL.matrix
+t = mat4.create()
 
 init = () ->
     document.body.appendChild renderer.view
@@ -102,21 +102,36 @@ render_graphics = () ->
     ground.render graphics
     next_bg()
 
-    t.identity()
-    t.rotate_y 0.05
-    cube.get_matrix().right_multiply t
+    mat4.identity t
+    mat4.rotateY t, t, 0.05
+    mat4.multiply cube.get_matrix(), cube.get_matrix(), t
 
     for e in [0...cube.get_edges().length]
         i = cube.get_edge e, 0
         j = cube.get_edge e, 1
 
-        cube.get_matrix().transform cube.get_vertices(i), point0
-        cube.get_matrix().transform cube.get_vertices(j), point1
+        transform cube.get_matrix(), cube.get_vertices(i), point0
+        transform cube.get_matrix(), cube.get_vertices(j), point1
 
         project_point point0, a
         project_point point1, b
 
         draw_line new PIXI.Point(a[0], a[1]), new PIXI.Point(b[0], b[1])
+
+temp = [0...4].map (t) -> 0.0
+transform = (mat, src, dst) ->
+    if src.length is not dst.length
+        console.log "not able to transform point due to dimension error."
+    else
+        for i in [0...src.length]
+            temp[i] = src[i]
+        temp[src.length] = 1
+
+        for i in [0...3]
+            replacement = 0.0
+            for j in [0...4]
+                replacement += temp[j] * mat[j + (4 * i)]
+            dst[i] = replacement
 
 sub_points = (last_point, point) ->
     mid = new PIXI.Point (point.x + last_point.x) / 2, (point.y + last_point.y) / 2
