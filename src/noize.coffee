@@ -12,7 +12,7 @@ point1 = [0...3].map (i) -> 0.0
 a = [0...2].map (i) -> 0
 b = [0...2].map (i) -> 0
 
-sphere = new UTIL.geometry().sphere()
+cube = new UTIL.geometry().cube()
 t = mat4.create()
 
 init = () ->
@@ -92,26 +92,28 @@ render_graphics = () ->
 
     mat4.identity t
     mat4.rotateY t, t, 0.05
-    mat4.multiply sphere.matrix, sphere.matrix, t
+    mat4.rotateZ t, t, 0.05
+    mat4.rotateX t, t, 0.05
+    mat4.multiply cube.matrix, cube.matrix, t
 
-    for f in [0...sphere.faces.length]
-        for e in [0...sphere.faces[f].length() - 1]
-            i = sphere.faces[f].vertices[e]
-            j = sphere.faces[f].vertices[e + 1]
+    for f in [0...cube.faces.length]
+        for e in [0...cube.faces[f].length() - 1]
+            i = cube.faces[f].vertices[e]
+            j = cube.faces[f].vertices[e + 1]
 
-            transform sphere.matrix, sphere.vertices[i].coordinates, point0
-            transform sphere.matrix, sphere.vertices[j].coordinates, point1
+            transform cube.matrix, cube.vertices[i].coordinates, point0
+            transform cube.matrix, cube.vertices[j].coordinates, point1
 
             project_point point0, a
             project_point point1, b
 
             draw_line new PIXI.Point(a[0], a[1]), new PIXI.Point(b[0], b[1])
 
-        i = sphere.faces[f].vertices[sphere.faces[f].length() - 1]
-        j = sphere.faces[f].vertices[0]
+        i = cube.faces[f].vertices[cube.faces[f].length() - 1]
+        j = cube.faces[f].vertices[0]
 
-        transform sphere.matrix, sphere.vertices[i].coordinates, point0
-        transform sphere.matrix, sphere.vertices[j].coordinates, point1
+        transform cube.matrix, cube.vertices[i].coordinates, point0
+        transform cube.matrix, cube.vertices[j].coordinates, point1
 
         project_point point0, a
         project_point point1, b
