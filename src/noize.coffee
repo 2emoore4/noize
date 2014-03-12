@@ -2,21 +2,13 @@ stage = new PIXI.Stage 0xFFFFFF
 
 w = 688
 h = 480
-fl = 10.0
 
 renderer = new PIXI.WebGLRenderer w, h, null, null, true
 graphics = new PIXI.Graphics
-
-point0 = [0...3].map (i) -> 0.0
-point1 = [0...3].map (i) -> 0.0
-a = [0...2].map (i) -> 0
-b = [0...2].map (i) -> 0
-
-geo_list = new Array()
+drawing_renderer = new UTIL.renderer(graphics, w, h)
 
 cube = new UTIL.geometry().cube()
-geo_list.push(cube)
-t = mat4.create()
+drawing_renderer.world.add(cube)
 
 init = () ->
     document.body.appendChild renderer.view
@@ -83,96 +75,20 @@ init_ground = () ->
     ground.add_point new PIXI.Point 0, 400
     ground.add_point new PIXI.Point 688, 405
 
-animate = () ->
-    renderer.render stage
-    requestAnimationFrame animate
-
 render_graphics = () ->
     graphics.clear()
-    house.render graphics
-    ground.render graphics
+    house.render(graphics)
+    ground.render(graphics)
     next_bg()
 
     cube.rotate_x(0.05)
     cube.rotate_y(0.05)
     cube.rotate_z(0.05)
 
-    for geo in geo_list
-        for f in [0...geo.faces.length]
-            for e in [0...geo.faces[f].length() - 1]
-                i = geo.faces[f].vertices[e]
-                j = geo.faces[f].vertices[e + 1]
+    drawing_renderer.render_world()
 
-                transform geo.matrix, geo.vertices[i].coordinates, point0
-                transform geo.matrix, geo.vertices[j].coordinates, point1
-
-                project_point point0, a
-                project_point point1, b
-
-                draw_line new PIXI.Point(a[0], a[1]), new PIXI.Point(b[0], b[1])
-
-            i = geo.faces[f].vertices[geo.faces[f].length() - 1]
-            j = geo.faces[f].vertices[0]
-
-            transform geo.matrix, geo.vertices[i].coordinates, point0
-            transform geo.matrix, geo.vertices[j].coordinates, point1
-
-            project_point point0, a
-            project_point point1, b
-
-            draw_line new PIXI.Point(a[0], a[1]), new PIXI.Point(b[0], b[1])
-
-temp = [0...4].map (t) -> 0.0
-transform = (mat, src, dst) ->
-    if src.length is not dst.length
-        console.log "not able to transform point due to dimension error."
-    else
-        for i in [0...src.length]
-            temp[i] = src[i]
-        temp[src.length] = 1
-
-        for i in [0...3]
-            replacement = 0.0
-            for j in [0...4]
-                replacement += temp[j] * mat[j + (4 * i)]
-            dst[i] = replacement
-
-sub_points = (last_point, point) ->
-    mid = new PIXI.Point (point.x + last_point.x) / 2, (point.y + last_point.y) / 2
-    length = distance last_point, point
-
-    all_points = null
-    if length < 50
-        all_points = new Array
-        all_points.push point
-    else
-        low = sub_points last_point, mid
-        high = sub_points mid, point
-        all_points = low.concat high
-
-    all_points
-
-distance = (p1, p2) ->
-    xdiff = p1.x - p2.x
-    ydiff = p1.y - p2.y
-    Math.sqrt (xdiff * xdiff) + (ydiff * ydiff)
-
-draw_line = (p1, p2) ->
-    graphics.moveTo p1.x + noise(), p1.y + noise()
-
-    inter_points = sub_points p1, p2
-
-    for i in [0...inter_points.length]
-        graphics.lineTo inter_points[i].x + noise(), inter_points[i].y + noise()
-
-project_point = (xyz, pxy) ->
-    x = xyz[0]
-    y = xyz[1]
-    z = xyz[2]
-
-    pxy[0] = w / 2 + (h * x / (fl - z))
-    pxy[1] = h / 2 + (h * y / (fl - z))
-
-noise = () -> (Math.random() - 0.5) * 2
+animate = () ->
+    renderer.render stage
+    requestAnimationFrame animate
 
 init()

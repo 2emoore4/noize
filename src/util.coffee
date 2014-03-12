@@ -32,7 +32,7 @@ class UTIL.geometry
         @t = mat4.create()
 
     transform_by_parent: (parent) ->
-        mat4.copy @glob_matrix, parent.get_glob_matrix()
+        mat4.copy @glob_matrix, parent.glob_matrix
         mat4.multiply @glob_matrix, @glob_matrix, @matrix
 
     cube: () ->
@@ -162,3 +162,94 @@ class UTIL.geometry
         mat4.scale(@t, @t, [x, y, z])
         mat4.multiply(@matrix, @matrix, @t)
 
+class UTIL.renderer
+    constructor: (@g, @w, @h) ->
+        @world = new UTIL.geometry()
+        @FL = 10
+        @point0 = vec3.create()
+        @point1 = vec3.create()
+        @a = vec2.create()
+        @b = vec2.create()
+        @temp = vec4.create()
+
+    render_world: () ->
+        for child in @world.children
+            child.transform_by_parent(@world)
+            @render_geometry(child)
+
+    render_geometry: (geo) ->
+        if geo.has_vertex()
+            for f in [0...geo.faces.length]
+                for e in [0...geo.faces[f].length() - 1]
+                    i = geo.faces[f].vertices[e]
+                    j = geo.faces[f].vertices[e + 1]
+
+                    @transform geo.matrix, geo.vertices[i].coordinates, @point0
+                    @transform geo.matrix, geo.vertices[j].coordinates, @point1
+
+                    @project_point @point0, @a
+                    @project_point @point1, @b
+
+                    @draw_line(@a, @b)
+
+                i = geo.faces[f].vertices[geo.faces[f].length() - 1]
+                j = geo.faces[f].vertices[0]
+
+                @transform geo.matrix, geo.vertices[i].coordinates, @point0
+                @transform geo.matrix, geo.vertices[j].coordinates, @point1
+
+                @project_point @point0, @a
+                @project_point @point1, @b
+
+                @draw_line(@a, @b)
+
+        for child in geo.children
+            child.transform_by_parent(geo)
+            render_geometry(child)
+
+    transform: (mat, src, dst) ->
+        if src.length is not dst.length
+            console.log "not able to transform point due to dimension error."
+        else
+            for i in [0...src.length]
+                @temp[i] = src[i]
+            @temp[src.length] = 1
+
+            for i in [0...3]
+                replacement = 0.0
+                for j in [0...4]
+                    replacement += @temp[j] * mat[j + (4 * i)]
+                dst[i] = replacement
+
+    sub_points: (last_point, point) ->
+        mid = [(point[0] + last_point[0]) / 2, (point[1] + last_point[1]) / 2]
+        length = vec2.distance last_point, point
+
+        all_points = null
+        if length < 50
+            all_points = new Array
+            all_points.push point
+        else
+            low = @sub_points last_point, mid
+            high = @sub_points mid, point
+            all_points = low.concat high
+
+        all_points
+
+    draw_line: (p1, p2) ->
+        @g.moveTo p1[0] + @noise(), p1[1] + @noise()
+
+        inter_points = @sub_points p1, p2
+
+        for i in [0...inter_points.length]
+            @g.lineTo inter_points[i][0] + @noise(), inter_points[i][1] + @noise()
+
+    project_point: (xyz, pxy) ->
+        x = xyz[0]
+        y = xyz[1]
+        z = xyz[2]
+
+        pxy[0] = @w / 2 + (@h * x / (@FL - z))
+        pxy[1] = @h / 2 + (@h * y / (@FL - z))
+
+    noise: () -> (Math.random() - 0.5) * 2
