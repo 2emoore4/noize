@@ -12,7 +12,7 @@ point1 = [0...3].map (i) -> 0.0
 a = [0...2].map (i) -> 0
 b = [0...2].map (i) -> 0
 
-cube = new UTIL.geometry().torus(1, 0.5)
+cube = new UTIL.geometry().cylinder()
 t = mat4.create()
 
 init = () ->

@@ -94,6 +94,32 @@ class UTIL.geometry
 
         this
 
+    cylinder: () ->
+        @vertices = new Array((@mesh_m + 1) * (@mesh_n + 1))
+        @faces = new Array(@mesh_m * @mesh_n)
+        @mesh_to_faces()
+
+        for m in [0...@mesh_m + 1]
+            for n in [0...@mesh_n + 1]
+                u = m / @mesh_m
+                v = n / @mesh_n
+
+                x = Math.cos(2 * Math.PI * u) * @r(v)
+                y = Math.sin(2 * Math.PI * u) * @r(v)
+                z = 0
+
+                if v < 0.5
+                    z = -1
+                else
+                    z = 1
+
+                @vertices[@point_to_vertex(m, n)] = new UTIL.vertex(x, y, z)
+
+        this
+
+    r: (v) ->
+        if v is 0 or v is 1 then 0 else 1
+
     mesh_to_faces: () ->
         for m in [0...@mesh_m]
             for n in [0...@mesh_n]
