@@ -73,28 +73,7 @@ class UTIL.geometry
     add: (child) ->
         @children.push child
 
-    get_child: (i) ->
-        @children[i]
-
-    get_num_children: () ->
-        @children.length
-
     remove: (child) ->
         index = @children.indexOf child
         @children = @children.splice index, 1
-
-    get_face: (i) ->
-        @faces[i]
-
-    get_num_faces: () ->
-        @faces.length
-
-    get_vertex: (i) ->
-        @vertices[i]
-
-    get_matrix: () ->
-        @matrix
-
-    get_glob_matrix: () ->
-        @glob_matrix
 

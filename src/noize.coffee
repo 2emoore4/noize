@@ -92,26 +92,26 @@ render_graphics = () ->
 
     mat4.identity t
     mat4.rotateY t, t, 0.05
-    mat4.multiply cube.get_matrix(), cube.get_matrix(), t
+    mat4.multiply cube.matrix, cube.matrix, t
 
-    for f in [0...cube.get_num_faces()]
-        for e in [0...cube.get_face(f).length() - 1]
-            i = cube.get_face(f).get_vertex(e)
-            j = cube.get_face(f).get_vertex(e + 1)
+    for f in [0...cube.faces.length]
+        for e in [0...cube.faces[f].length() - 1]
+            i = cube.faces[f].vertices[e]
+            j = cube.faces[f].vertices[e + 1]
 
-            transform cube.get_matrix(), cube.vertices[i].coordinates, point0
-            transform cube.get_matrix(), cube.vertices[j].coordinates, point1
+            transform cube.matrix, cube.vertices[i].coordinates, point0
+            transform cube.matrix, cube.vertices[j].coordinates, point1
 
             project_point point0, a
             project_point point1, b
 
             draw_line new PIXI.Point(a[0], a[1]), new PIXI.Point(b[0], b[1])
 
-        i = cube.get_face(f).get_vertex(cube.get_face(f).length() - 1)
-        j = cube.get_face(f).get_vertex(0)
+        i = cube.faces[f].vertices[cube.faces[f].length() - 1]
+        j = cube.faces[f].vertices[0]
 
-        transform cube.get_matrix(), cube.vertices[i].coordinates, point0
-        transform cube.get_matrix(), cube.vertices[j].coordinates, point1
+        transform cube.matrix, cube.vertices[i].coordinates, point0
+        transform cube.matrix, cube.vertices[j].coordinates, point1
 
         project_point point0, a
         project_point point1, b
