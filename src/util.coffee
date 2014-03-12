@@ -22,8 +22,8 @@ class UTIL.face
 
 class UTIL.geometry
     constructor: () ->
-        @mesh_m = 20
-        @mesh_n = 20
+        @mesh_m = 10
+        @mesh_n = 10
         @vertices = new Array()
         @faces = new Array()
         @matrix = mat4.create()
@@ -58,14 +58,32 @@ class UTIL.geometry
 
         this
 
+    sphere: () ->
+        @vertices = new Array((@mesh_m + 1) * (@mesh_n + 1))
+        @faces = new Array(@mesh_m * @mesh_n)
+        @mesh_to_faces()
+
+        for m in [0...@mesh_m + 1]
+            for n in [0...@mesh_n + 1]
+                u = m / @mesh_m
+                v = n / @mesh_n
+
+                x = Math.cos(2 * Math.PI * u) * Math.cos(Math.PI * (v - 0.5))
+                y = Math.sin(2 * Math.PI * u) * Math.cos(Math.PI * (v - 0.5))
+                z = Math.sin(Math.PI * (v - 0.5))
+
+                @vertices[@point_to_vertex(m, n)] = new UTIL.vertex(x, y, z)
+
+        this
+
     mesh_to_faces: () ->
-        for m in [0...mesh_m]
-            for n in [0...mesh_n]
-                current_face = m + (mesh_m * n)
-                @faces[current_face] = new UTIL.face point_to_vertex(m, n), point_to_vertex(m + 1, n), point_to_vertex(m + 1, n + 1), point_to_vertex(m, n + 1)
+        for m in [0...@mesh_m]
+            for n in [0...@mesh_n]
+                current_face = m + (@mesh_m * n)
+                @faces[current_face] = new UTIL.face @point_to_vertex(m, n), @point_to_vertex(m + 1, n), @point_to_vertex(m + 1, n + 1), @point_to_vertex(m, n + 1)
 
     point_to_vertex: (m, n) ->
-        m + ((mesh_m + 1) * n)
+        m + ((@mesh_m + 1) * n)
 
     has_vertex: () ->
         if @vertices.length == 0 then false else true
