@@ -12,7 +12,11 @@ point1 = [0...3].map (i) -> 0.0
 a = [0...2].map (i) -> 0
 b = [0...2].map (i) -> 0
 
-cube = new UTIL.geometry().cylinder()
+geo_list = new Array()
+
+cube = new UTIL.geometry().cube()
+geo_list.push(cube)
+geo_list.push(new UTIL.geometry().cylinder())
 t = mat4.create()
 
 init = () ->
@@ -96,29 +100,30 @@ render_graphics = () ->
     mat4.rotateX t, t, 0.05
     mat4.multiply cube.matrix, cube.matrix, t
 
-    for f in [0...cube.faces.length]
-        for e in [0...cube.faces[f].length() - 1]
-            i = cube.faces[f].vertices[e]
-            j = cube.faces[f].vertices[e + 1]
+    for geo in geo_list
+        for f in [0...geo.faces.length]
+            for e in [0...geo.faces[f].length() - 1]
+                i = geo.faces[f].vertices[e]
+                j = geo.faces[f].vertices[e + 1]
 
-            transform cube.matrix, cube.vertices[i].coordinates, point0
-            transform cube.matrix, cube.vertices[j].coordinates, point1
+                transform geo.matrix, geo.vertices[i].coordinates, point0
+                transform geo.matrix, geo.vertices[j].coordinates, point1
+
+                project_point point0, a
+                project_point point1, b
+
+                draw_line new PIXI.Point(a[0], a[1]), new PIXI.Point(b[0], b[1])
+
+            i = geo.faces[f].vertices[geo.faces[f].length() - 1]
+            j = geo.faces[f].vertices[0]
+
+            transform geo.matrix, geo.vertices[i].coordinates, point0
+            transform geo.matrix, geo.vertices[j].coordinates, point1
 
             project_point point0, a
             project_point point1, b
 
             draw_line new PIXI.Point(a[0], a[1]), new PIXI.Point(b[0], b[1])
-
-        i = cube.faces[f].vertices[cube.faces[f].length() - 1]
-        j = cube.faces[f].vertices[0]
-
-        transform cube.matrix, cube.vertices[i].coordinates, point0
-        transform cube.matrix, cube.vertices[j].coordinates, point1
-
-        project_point point0, a
-        project_point point1, b
-
-        draw_line new PIXI.Point(a[0], a[1]), new PIXI.Point(b[0], b[1])
 
 temp = [0...4].map (t) -> 0.0
 transform = (mat, src, dst) ->
