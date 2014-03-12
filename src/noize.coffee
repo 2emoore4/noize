@@ -16,7 +16,6 @@ geo_list = new Array()
 
 cube = new UTIL.geometry().cube()
 geo_list.push(cube)
-geo_list.push(new UTIL.geometry().cylinder())
 t = mat4.create()
 
 init = () ->
@@ -94,11 +93,9 @@ render_graphics = () ->
     ground.render graphics
     next_bg()
 
-    mat4.identity t
-    mat4.rotateY t, t, 0.05
-    mat4.rotateZ t, t, 0.05
-    mat4.rotateX t, t, 0.05
-    mat4.multiply cube.matrix, cube.matrix, t
+    cube.rotate_x(0.05)
+    cube.rotate_y(0.05)
+    cube.rotate_z(0.05)
 
     for geo in geo_list
         for f in [0...geo.faces.length]

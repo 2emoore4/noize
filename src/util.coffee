@@ -27,13 +27,11 @@ class UTIL.geometry
         @vertices = new Array()
         @faces = new Array()
         @matrix = mat4.create()
-        mat4.identity @matrix
         @glob_matrix = mat4.create()
-        mat4.identity @glob_matrix
         @children = new Array()
+        @t = mat4.create()
 
     transform_by_parent: (parent) ->
-        mat4.identity @glob_matrix
         mat4.copy @glob_matrix, parent.get_glob_matrix()
         mat4.multiply @glob_matrix, @glob_matrix, @matrix
 
@@ -138,4 +136,29 @@ class UTIL.geometry
     remove: (child) ->
         index = @children.indexOf child
         @children = @children.splice index, 1
+
+    translate: (x, y, z) ->
+        mat4.identity(@t)
+        mat4.translate(@t, @t, [x, y, z])
+        mat4.multiply(@matrix, @matrix, @t)
+
+    rotate_x: (a) ->
+        mat4.identity(@t)
+        mat4.rotateX(@t, @t, a)
+        mat4.multiply(@matrix, @matrix, @t)
+
+    rotate_y: (a) ->
+        mat4.identity(@t)
+        mat4.rotateY(@t, @t, a)
+        mat4.multiply(@matrix, @matrix, @t)
+
+    rotate_z: (a) ->
+        mat4.identity(@t)
+        mat4.rotateZ(@t, @t, a)
+        mat4.multiply(@matrix, @matrix, @t)
+
+    scale: (x, y, z) ->
+        mat4.identity(@t)
+        mat4.scale(@t, @t, [x, y, z])
+        mat4.multiply(@matrix, @matrix, @t)
 
