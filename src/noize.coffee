@@ -12,7 +12,7 @@ point1 = [0...3].map (i) -> 0.0
 a = [0...2].map (i) -> 0
 b = [0...2].map (i) -> 0
 
-cube = new UTIL.geometry().cube()
+cube = new UTIL.geometry().torus(1, 0.5)
 t = mat4.create()
 
 init = () ->
@@ -24,7 +24,7 @@ init = () ->
 
     stage.addChild graphics
 
-    setInterval render_graphics, 200
+    setInterval render_graphics, 150
     requestAnimationFrame animate
 
 paper_current = 0

@@ -76,6 +76,24 @@ class UTIL.geometry
 
         this
 
+    torus: (big_r, little_r) ->
+        @vertices = new Array((@mesh_m + 1) * (@mesh_n + 1))
+        @faces = new Array(@mesh_m * @mesh_n)
+        @mesh_to_faces()
+
+        for m in [0...@mesh_m + 1]
+            for n in [0...@mesh_n + 1]
+                u = m / @mesh_m
+                v = n / @mesh_n
+
+                x = Math.cos(2 * Math.PI * u) * (big_r + little_r * Math.cos(2 * Math.PI * v))
+                y = Math.sin(2 * Math.PI * u) * (big_r + little_r * Math.cos(2 * Math.PI * v))
+                z = little_r * Math.sin(2 * Math.PI * v)
+
+                @vertices[@point_to_vertex(m, n)] = new UTIL.vertex(x, y, z)
+
+        this
+
     mesh_to_faces: () ->
         for m in [0...@mesh_m]
             for n in [0...@mesh_n]
