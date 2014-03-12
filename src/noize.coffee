@@ -12,19 +12,7 @@ point1 = [0...3].map (i) -> 0.0
 a = [0...2].map (i) -> 0
 b = [0...2].map (i) -> 0
 
-vertices = [
-    [ -1,-1,-1], [ 1,-1,-1], [-1, 1,-1], [1, 1,-1],
-    [ -1,-1, 1], [ 1,-1, 1], [-1, 1, 1], [1, 1, 1],
-    [ 0, 0, 0]
-]
-
-edges = [
-    [0,1],[2,3],[4,5],[6,7],
-    [0,2],[1,3],[4,6],[5,7],
-    [0,4],[1,5],[2,6],[3,7],
-]
-
-cube = new DRAW.shape vertices, edges
+cube = new UTIL.geometry().cube()
 t = mat4.create()
 
 init = () ->
@@ -106,12 +94,24 @@ render_graphics = () ->
     mat4.rotateY t, t, 0.05
     mat4.multiply cube.get_matrix(), cube.get_matrix(), t
 
-    for e in [0...cube.get_edges().length]
-        i = cube.get_edge e, 0
-        j = cube.get_edge e, 1
+    for f in [0...cube.get_num_faces()]
+        for e in [0...cube.get_face(f).length() - 1]
+            i = cube.get_face(f).get_vertex(e)
+            j = cube.get_face(f).get_vertex(e + 1)
 
-        transform cube.get_matrix(), cube.get_vertices(i), point0
-        transform cube.get_matrix(), cube.get_vertices(j), point1
+            transform cube.get_matrix(), cube.vertices[i].coordinates, point0
+            transform cube.get_matrix(), cube.vertices[j].coordinates, point1
+
+            project_point point0, a
+            project_point point1, b
+
+            draw_line new PIXI.Point(a[0], a[1]), new PIXI.Point(b[0], b[1])
+
+        i = cube.get_face(f).get_vertex(cube.get_face(f).length() - 1)
+        j = cube.get_face(f).get_vertex(0)
+
+        transform cube.get_matrix(), cube.vertices[i].coordinates, point0
+        transform cube.get_matrix(), cube.vertices[j].coordinates, point1
 
         project_point point0, a
         project_point point1, b
