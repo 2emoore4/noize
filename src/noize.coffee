@@ -8,6 +8,8 @@ graphics = new PIXI.Graphics
 drawing_renderer = new UTIL.renderer(graphics, w, h)
 
 cube = new UTIL.geometry().cube()
+cylinder = new UTIL.geometry().cylinder()
+cube.add(cylinder)
 drawing_renderer.world.add(cube)
 
 init = () ->
