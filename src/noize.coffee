@@ -9,6 +9,9 @@ drawing_renderer = new UTIL.renderer(graphics, w, h)
 
 cube = new UTIL.geometry().cube()
 cylinder = new UTIL.geometry().cylinder()
+cylinder.scale(1, 1, 2)
+cylinder.rotate_x(Math.PI / 2)
+cylinder.translate(0, 0, 2)
 cube.add(cylinder)
 drawing_renderer.world.add(cube)
 
@@ -84,8 +87,6 @@ render_graphics = () ->
     next_bg()
 
     cube.rotate_x(0.05)
-    cube.rotate_y(0.05)
-    cube.rotate_z(0.05)
 
     drawing_renderer.render_world()
 

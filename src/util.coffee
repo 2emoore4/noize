@@ -226,7 +226,7 @@ class UTIL.renderer
             for i in [0...3]
                 replacement = 0.0
                 for j in [0...4]
-                    replacement += @temp[j] * mat[j + (4 * i)]
+                    replacement += @temp[j] * mat[i + (4 * j)]
                 dst[i] = replacement
 
     sub_points: (last_point, point) ->
