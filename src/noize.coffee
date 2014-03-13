@@ -9,7 +9,6 @@ drawing_renderer = new UTIL.renderer(graphics, w, h)
 
 cube = new UTIL.geometry().cube()
 cylinder = new UTIL.geometry().cylinder()
-cylinder.scale(1, 1, 2)
 cylinder.rotate_x(Math.PI / 2)
 cylinder.translate(0, 0, 2)
 cube.add(cylinder)

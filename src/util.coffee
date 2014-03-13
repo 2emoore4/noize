@@ -27,8 +27,13 @@ class UTIL.geometry
         @vertices = new Array()
         @faces = new Array()
         @matrix = mat4.create()
+        @glob_matrix = mat4.create()
         @children = new Array()
         @t = mat4.create()
+
+    transform_by_parent: (parent) ->
+        mat4.copy(@glob_matrix, parent.glob_matrix)
+        mat4.multiply(@glob_matrix, @glob_matrix, @matrix)
 
     cube: () ->
         @vertices = [
@@ -137,40 +142,25 @@ class UTIL.geometry
         mat4.translate(@t, @t, [x, y, z])
         mat4.multiply(@matrix, @matrix, @t)
 
-        for child in @children
-            child.translate(x, y, z)
-
     rotate_x: (a) ->
         mat4.identity(@t)
         mat4.rotateX(@t, @t, a)
         mat4.multiply(@matrix, @matrix, @t)
-
-        for child in @children
-            child.rotate_x(a)
 
     rotate_y: (a) ->
         mat4.identity(@t)
         mat4.rotateY(@t, @t, a)
         mat4.multiply(@matrix, @matrix, @t)
 
-        for child in @children
-            child.rotate_y(a)
-
     rotate_z: (a) ->
         mat4.identity(@t)
         mat4.rotateZ(@t, @t, a)
         mat4.multiply(@matrix, @matrix, @t)
 
-        for child in @children
-            child.rotate_z(a)
-
     scale: (x, y, z) ->
         mat4.identity(@t)
         mat4.scale(@t, @t, [x, y, z])
         mat4.multiply(@matrix, @matrix, @t)
-
-        for child in @children
-            child.scale(x, y, z)
 
 class UTIL.renderer
     constructor: (@g, @w, @h) ->
@@ -184,6 +174,7 @@ class UTIL.renderer
 
     render_world: () ->
         for child in @world.children
+            child.transform_by_parent(@world)
             @render_geometry(child)
 
     render_geometry: (geo) ->
@@ -193,8 +184,8 @@ class UTIL.renderer
                     i = geo.faces[f].vertices[e]
                     j = geo.faces[f].vertices[e + 1]
 
-                    @transform geo.matrix, geo.vertices[i].coordinates, @point0
-                    @transform geo.matrix, geo.vertices[j].coordinates, @point1
+                    @transform geo.glob_matrix, geo.vertices[i].coordinates, @point0
+                    @transform geo.glob_matrix, geo.vertices[j].coordinates, @point1
 
                     @project_point @point0, @a
                     @project_point @point1, @b
@@ -204,8 +195,8 @@ class UTIL.renderer
                 i = geo.faces[f].vertices[geo.faces[f].length() - 1]
                 j = geo.faces[f].vertices[0]
 
-                @transform geo.matrix, geo.vertices[i].coordinates, @point0
-                @transform geo.matrix, geo.vertices[j].coordinates, @point1
+                @transform geo.glob_matrix, geo.vertices[i].coordinates, @point0
+                @transform geo.glob_matrix, geo.vertices[j].coordinates, @point1
 
                 @project_point @point0, @a
                 @project_point @point1, @b
@@ -213,6 +204,7 @@ class UTIL.renderer
                 @draw_line(@a, @b)
 
         for child in geo.children
+            child.transform_by_parent(geo)
             @render_geometry(child)
 
     transform: (mat, src, dst) ->
