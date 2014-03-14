@@ -85,13 +85,13 @@ init_ground = () ->
 
     drawing_renderer.world.add(ground)
 
+date = new Date()
 render_graphics = () ->
     graphics.clear()
     graphics.lineStyle 3, 0x5c6274
     next_bg()
 
-#    cube.rotate_x(0.05)
-    drawing_renderer.rotate_y(0.05)
+    drawing_renderer.rotate_y(Math.random() - 0.5)
 
     drawing_renderer.render_world()
 
