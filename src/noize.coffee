@@ -13,6 +13,7 @@ cylinder = new UTIL.geometry().cylinder()
 cylinder.rotate_x(Math.PI / 2)
 cylinder.translate(0, 0, 2)
 cube.add(cylinder)
+cube.translate(-4, 0, 0)
 drawing_renderer.world.add(cube)
 
 init = () ->
@@ -21,6 +22,7 @@ init = () ->
     init_bg()
     init_house()
     init_ground()
+    init_person()
 
     stage.addChild graphics
 
@@ -84,6 +86,67 @@ init_ground = () ->
     ground.add_vertex([8, 2])
 
     drawing_renderer.world.add(ground)
+
+person = null
+init_person = () ->
+    person = new UTIL.geometry_2d()
+
+    r_leg = new UTIL.geometry_2d()
+    r_leg.add_vertex([0, 1])
+    r_leg.add_vertex([0.2, 1.5])
+    r_leg.add_vertex([0.25, 1.9])
+    person.add(r_leg)
+
+    r_foot = new UTIL.geometry_2d()
+    r_foot.add_vertex([0.25, 1.9])
+    r_foot.add_vertex([0.4, 1.95])
+    r_leg.add(r_foot)
+
+    l_leg = new UTIL.geometry_2d()
+    l_leg.add_vertex([0, 1])
+    l_leg.add_vertex([0.05, 1.5])
+    l_leg.add_vertex([0.1, 1.9])
+    person.add(l_leg)
+
+    l_foot = new UTIL.geometry_2d()
+    l_foot.add_vertex([0.1, 1.9])
+    l_foot.add_vertex([0.25, 1.95])
+    l_leg.add(l_foot)
+
+    torso = new UTIL.geometry_2d()
+    torso.add_vertex([0, 1])
+    torso.add_vertex([0, 0.4])
+    person.add(torso)
+
+    l_arm = new UTIL.geometry_2d()
+    l_arm.add_vertex([0, 0.41])
+    l_arm.add_vertex([-0.2, 0.7])
+    torso.add(l_arm)
+
+    l_fore = new UTIL.geometry_2d()
+    l_fore.add_vertex([-0.2, 0.7])
+    l_fore.add_vertex([-0.2, 0.9])
+    l_arm.add(l_fore)
+
+    r_arm = new UTIL.geometry_2d()
+    r_arm.add_vertex([0, 0.41])
+    r_arm.add_vertex([0.2, 0.7])
+    torso.add(r_arm)
+
+    r_fore = new UTIL.geometry_2d()
+    r_fore.add_vertex([0.2, 0.7])
+    r_fore.add_vertex([0.2, 0.9])
+    r_arm.add(r_fore)
+
+    head = new UTIL.geometry_2d()
+    head.add_vertex([-0.1, 0.4])
+    head.add_vertex([0.1, 0.4])
+    head.add_vertex([0.1, 0.2])
+    head.add_vertex([-0.1, 0.2])
+    head.add_vertex([-0.1, 0.4])
+    torso.add(head)
+
+    drawing_renderer.world.add(person)
 
 date = new Date()
 render_graphics = () ->
