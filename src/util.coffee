@@ -162,6 +162,53 @@ class UTIL.geometry
         mat4.scale(@t, @t, [x, y, z])
         mat4.multiply(@matrix, @matrix, @t)
 
+class UTIL.geometry_2d
+    constructor: () ->
+        @vertices = new Array()
+        @matrix = mat4.create()
+        @glob_matrix = mat4.create()
+        @children = new Array()
+        @t = mat4.create()
+
+    transform_by_parent: (parent) ->
+        mat4.copy(@glob_matrix, parent.glob_matrix)
+        mat4.multiply(@glob_matrix, @glob_matrix, @matrix)
+
+    has_vertex: () ->
+        if @vertices.length == 0 then false else true
+
+    add: (child) ->
+        @children.push child
+
+    remove: (child) ->
+        index = @children.indexOf child
+        @children = @children.splice index, 1
+
+    translate: (x, y, z) ->
+        mat4.identity(@t)
+        mat4.translate(@t, @t, [x, y, z])
+        mat4.multiply(@matrix, @matrix, @t)
+
+    rotate_x: (a) ->
+        mat4.identity(@t)
+        mat4.rotateX(@t, @t, a)
+        mat4.multiply(@matrix, @matrix, @t)
+
+    rotate_y: (a) ->
+        mat4.identity(@t)
+        mat4.rotateY(@t, @t, a)
+        mat4.multiply(@matrix, @matrix, @t)
+
+    rotate_z: (a) ->
+        mat4.identity(@t)
+        mat4.rotateZ(@t, @t, a)
+        mat4.mulitply(@matrix, @matrix, @t)
+
+    scale: (x, y, z) ->
+        mat4.identity(@t)
+        mat4.scale(@t, @t, [x, y, z])
+        mat4.multiply(@matrix, @matrix, @t)
+
 class UTIL.renderer
     constructor: (@g, @w, @h) ->
         @world = new UTIL.geometry()
@@ -177,6 +224,25 @@ class UTIL.renderer
         @render_geometry(@world)
 
     render_geometry: (geo) ->
+        if geo instanceof UTIL.geometry
+            @render_3d(geo)
+        else if geo instanceof UTIL.geometry_2d
+            @render_2d(geo)
+
+    render_2d: (geo) ->
+        if geo.has_vertex()
+            last = geo.vertices[0]
+
+            for i in [1...geo.vertices.length]
+                next = geo.vertices[i]
+                @draw_line(last, next)
+                last = next
+
+        for child in geo.children
+            child.transform_by_parent(geo)
+            @render_geometry(child)
+
+    render_3d: (geo) ->
         if geo.has_vertex()
             for f in [0...geo.faces.length]
                 for e in [0...geo.faces[f].length() - 1]

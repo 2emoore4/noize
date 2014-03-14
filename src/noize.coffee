@@ -6,6 +6,7 @@ h = 480
 renderer = new PIXI.WebGLRenderer w, h, null, null, true
 graphics = new PIXI.Graphics
 drawing_renderer = new UTIL.renderer(graphics, w, h)
+window.r = drawing_renderer
 
 cube = new UTIL.geometry().cube()
 cylinder = new UTIL.geometry().cylinder()
@@ -48,41 +49,44 @@ next_bg = () ->
 
 house = null
 init_house = () ->
-    house = new DRAW.polygon
+    house = new UTIL.geometry_2d()
 
-    body = new DRAW.line
-    body.add_point new PIXI.Point 400, 300
-    body.add_point new PIXI.Point 494, 295
-    body.add_point new PIXI.Point 500, 404
-    body.add_point new PIXI.Point 398, 400
-    body.add_point new PIXI.Point 400, 300
-    house.add_line body
+    body = new UTIL.geometry_2d()
+    body.vertices.push  [400, 300]
+    body.vertices.push  [494, 295]
+    body.vertices.push  [500, 404]
+    body.vertices.push  [398, 400]
+    body.vertices.push  [400, 300]
+    house.add body
 
-    roof = new DRAW.line
-    roof.add_point new PIXI.Point 400, 300
-    roof.add_point new PIXI.Point 450, 250
-    roof.add_point new PIXI.Point 494, 295
-    roof.add_point new PIXI.Point 400, 300
-    house.add_line roof
+    roof = new UTIL.geometry_2d()
+    roof.vertices.push  [400, 300]
+    roof.vertices.push  [450, 250]
+    roof.vertices.push  [494, 295]
+    roof.vertices.push  [400, 300]
+    house.add roof
 
-    door = new DRAW.line
-    door.add_point new PIXI.Point 435, 400
-    door.add_point new PIXI.Point 435, 325
-    door.add_point new PIXI.Point 465, 325
-    door.add_point new PIXI.Point 465, 400
-    house.add_line door
+    door = new UTIL.geometry_2d()
+    door.vertices.push  [435, 400]
+    door.vertices.push  [435, 325]
+    door.vertices.push  [465, 325]
+    door.vertices.push  [465, 400]
+    house.add door
+
+    drawing_renderer.world.add(house)
 
 ground = null
 init_ground = () ->
-    ground = new DRAW.line
+    ground = new UTIL.geometry_2d()
 
-    ground.add_point new PIXI.Point 0, 400
-    ground.add_point new PIXI.Point 688, 405
+    ground.vertices.push([0, 400])
+    ground.vertices.push([688, 405])
+
+    drawing_renderer.world.add(ground)
 
 render_graphics = () ->
     graphics.clear()
-    house.render(graphics)
-    ground.render(graphics)
+    graphics.lineStyle 3, 0x5c6274
     next_bg()
 
     cube.rotate_x(0.05)
