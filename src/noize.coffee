@@ -90,8 +90,8 @@ render_graphics = () ->
     graphics.lineStyle 3, 0x5c6274
     next_bg()
 
-    cube.rotate_x(0.05)
-    house.rotate_y(0.2)
+#    cube.rotate_x(0.05)
+    drawing_renderer.rotate_y(0.05)
 
     drawing_renderer.render_world()
 
