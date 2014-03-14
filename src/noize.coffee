@@ -52,25 +52,25 @@ init_house = () ->
     house = new UTIL.geometry_2d()
 
     body = new UTIL.geometry_2d()
-    body.vertices.push  [400, 300]
-    body.vertices.push  [494, 295]
-    body.vertices.push  [500, 404]
-    body.vertices.push  [398, 400]
-    body.vertices.push  [400, 300]
+    body.add_vertex  [3, 2]
+    body.add_vertex  [5, 2]
+    body.add_vertex  [5, 0]
+    body.add_vertex  [3, 0]
+    body.add_vertex  [3, 2]
     house.add body
 
     roof = new UTIL.geometry_2d()
-    roof.vertices.push  [400, 300]
-    roof.vertices.push  [450, 250]
-    roof.vertices.push  [494, 295]
-    roof.vertices.push  [400, 300]
+    roof.add_vertex  [3, 0]
+    roof.add_vertex  [4, -1]
+    roof.add_vertex  [5, 0]
+    roof.add_vertex  [3, 0]
     house.add roof
 
     door = new UTIL.geometry_2d()
-    door.vertices.push  [435, 400]
-    door.vertices.push  [435, 325]
-    door.vertices.push  [465, 325]
-    door.vertices.push  [465, 400]
+    door.add_vertex  [3.7, 2]
+    door.add_vertex  [3.7, 0.5]
+    door.add_vertex  [4.3, 0.5]
+    door.add_vertex  [4.3, 2]
     house.add door
 
     drawing_renderer.world.add(house)
@@ -79,8 +79,8 @@ ground = null
 init_ground = () ->
     ground = new UTIL.geometry_2d()
 
-    ground.vertices.push([0, 400])
-    ground.vertices.push([688, 405])
+    ground.add_vertex([-8, 2])
+    ground.add_vertex([8, 2])
 
     drawing_renderer.world.add(ground)
 
@@ -90,8 +90,7 @@ render_graphics = () ->
     next_bg()
 
     cube.rotate_x(0.05)
-
-    drawing_renderer.rotate_y(0.01)
+    house.rotate_y(0.05)
 
     drawing_renderer.render_world()
 

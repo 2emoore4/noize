@@ -170,6 +170,9 @@ class UTIL.geometry_2d
         @children = new Array()
         @t = mat4.create()
 
+    add_vertex: (vertex) ->
+        @vertices.push([vertex[0], vertex[1], 0])
+
     transform_by_parent: (parent) ->
         mat4.copy(@glob_matrix, parent.glob_matrix)
         mat4.multiply(@glob_matrix, @glob_matrix, @matrix)
@@ -231,12 +234,14 @@ class UTIL.renderer
 
     render_2d: (geo) ->
         if geo.has_vertex()
-            last = geo.vertices[0]
-
             for i in [1...geo.vertices.length]
-                next = geo.vertices[i]
-                @draw_line(last, next)
-                last = next
+                @transform geo.glob_matrix, geo.vertices[i - 1], @point0
+                @transform geo.glob_matrix, geo.vertices[i], @point1
+
+                @project_point @point0, @a
+                @project_point @point1, @b
+
+                @draw_line(@a, @b)
 
         for child in geo.children
             child.transform_by_parent(geo)
