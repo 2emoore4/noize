@@ -87,6 +87,8 @@ render_graphics = () ->
 
     cube.rotate_x(0.05)
 
+    drawing_renderer.rotate_y(0.01)
+
     drawing_renderer.render_world()
 
 animate = () ->

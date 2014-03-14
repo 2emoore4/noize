@@ -171,11 +171,10 @@ class UTIL.renderer
         @a = vec2.create()
         @b = vec2.create()
         @temp = vec4.create()
+        @t = mat4.create()
 
     render_world: () ->
-        for child in @world.children
-            child.transform_by_parent(@world)
-            @render_geometry(child)
+        @render_geometry(@world)
 
     render_geometry: (geo) ->
         if geo.has_vertex()
@@ -253,3 +252,28 @@ class UTIL.renderer
         pxy[1] = @h / 2 + (@h * y / (@FL - z))
 
     noise: () -> (Math.random() - 0.5) * 2
+
+    translate: (x, y, z) ->
+        mat4.identity(@t)
+        mat4.translate(@t, @t, [x, y, z])
+        mat4.multiply(@world.glob_matrix, @world.glob_matrix, @t)
+
+    rotate_x: (a) ->
+        mat4.identity(@t)
+        mat4.rotateX(@t, @t, a)
+        mat4.multiply(@world.glob_matrix, @world.glob_matrix, @t)
+
+    rotate_y: (a) ->
+        mat4.identity(@t)
+        mat4.rotateY(@t, @t, a)
+        mat4.multiply(@world.glob_matrix, @world.glob_matrix, @t)
+
+    rotate_z: (a) ->
+        mat4.identity(@t)
+        mat4.rotateZ(@t, @t, a)
+        mat4.multiply(@world.glob_matrix, @world.glob_matrix, @t)
+
+    scale: (x, y, z) ->
+        mat4.identity(@t)
+        mat4.scale(@t, @t, [x, y, z])
+        mat4.multiply(@world.glob_matrix, @world.glob_matrix, @t)
