@@ -88,6 +88,12 @@ init_ground = () ->
     drawing_renderer.world.add(ground)
 
 person = null
+r_leg = null
+l_leg = null
+torso = null
+head = null
+r_arm = null
+l_arm = null
 init_person = () ->
     person = new UTIL.geometry_2d()
 
@@ -115,11 +121,11 @@ init_person = () ->
 
     torso = new UTIL.geometry_2d()
     torso.add_vertex([0, 1])
-    torso.add_vertex([0, 0.4])
+    torso.add_vertex([0.1, 0.4])
     person.add(torso)
 
     l_arm = new UTIL.geometry_2d()
-    l_arm.add_vertex([0, 0.41])
+    l_arm.add_vertex([0.09, 0.45])
     l_arm.add_vertex([-0.2, 0.7])
     torso.add(l_arm)
 
@@ -129,7 +135,7 @@ init_person = () ->
     l_arm.add(l_fore)
 
     r_arm = new UTIL.geometry_2d()
-    r_arm.add_vertex([0, 0.41])
+    r_arm.add_vertex([0.09, 0.45])
     r_arm.add_vertex([0.2, 0.7])
     torso.add(r_arm)
 
@@ -139,13 +145,13 @@ init_person = () ->
     r_arm.add(r_fore)
 
     head = new UTIL.geometry_2d()
-    head.add_vertex([-0.1, 0.4])
-    head.add_vertex([0.1, 0.4])
+    head.add_vertex([0, 0.4])
+    head.add_vertex([0.2, 0.4])
     head.add_vertex([0.1, 0.2])
-    head.add_vertex([-0.1, 0.2])
-    head.add_vertex([-0.1, 0.4])
+    head.add_vertex([0, 0.4])
     torso.add(head)
 
+    person.scale(2, 2, 2)
     drawing_renderer.world.add(person)
 
 date = new Date()
@@ -153,6 +159,8 @@ render_graphics = () ->
     graphics.clear()
     graphics.lineStyle 3, 0x5c6274
     next_bg()
+
+    cube.rotate_x(0.05)
 
     drawing_renderer.render_world()
 
