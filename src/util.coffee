@@ -169,13 +169,50 @@ class UTIL.geometry_2d
         @glob_matrix = mat4.create()
         @children = new Array()
         @t = mat4.create()
+        @rotate_vec = vec3.create()
+        @translate_vec = vec3.create()
+        @scale_vec = vec3.create()
+        @reset_matrix()
 
     add_vertex: (vertex) ->
         @vertices.push([vertex[0], vertex[1], 0])
 
+    reset_matrix: () ->
+        vec3.set(@rotate_vec, 0, 0, 0)
+        vec3.set(@translate_vec, 0, 0, 0)
+        vec3.set(@scale_vec, 1, 1, 1)
+
     transform_by_parent: (parent) ->
         mat4.copy(@glob_matrix, parent.glob_matrix)
         mat4.multiply(@glob_matrix, @glob_matrix, @matrix)
+
+    render_prep: () ->
+        mat4.identity(@matrix)
+
+        if @translate_vec[0] != 0 or @translate_vec[1] != 0 or @translate_vec[2] != 0
+            mat4.identity(@t)
+            mat4.translate(@t, @t, @translate_vec)
+            mat4.multiply(@matrix, @matrix, @t)
+
+        if @rotate_vec[0] != 0
+            mat4.identity(@t)
+            mat4.rotateX(@t, @t, @rotate_vec[0])
+            mat4.multiply(@matrix, @matrix, @t)
+
+        if @rotate_vec[1] != 0
+            mat4.identity(@t)
+            mat4.rotateY(@t, @t, @rotate_vec[1])
+            mat4.multiply(@matrix, @matrix, @t)
+
+        if @rotate_vec[2] != 0
+            mat4.identity(@t)
+            mat4.rotateZ(@t, @t, @rotate_vec[2])
+            mat4.multiply(@matrix, @matrix, @t)
+
+        if @scale_vec[0] != 1 or @scale_vec[1] != 1 or @scale_vec[2] != 1
+            mat4.identity(@t)
+            mat4.scale(@t, @t, @scale_vec)
+            mat4.multiply(@matrix, @matrix, @t)
 
     has_vertex: () ->
         if @vertices.length == 0 then false else true
@@ -187,30 +224,36 @@ class UTIL.geometry_2d
         index = @children.indexOf child
         @children = @children.splice index, 1
 
+    set_translation: (x, y, z) ->
+        vec3.set(@translate_vec, x, y, z)
+
     translate: (x, y, z) ->
-        mat4.identity(@t)
-        mat4.translate(@t, @t, [x, y, z])
-        mat4.multiply(@matrix, @matrix, @t)
+        @translate_vec[0] += x
+        @translate_vec[1] += y
+        @translate_vec[2] += z
+
+    set_rotation_x: (a) ->
+        @rotate_vec[0] = a
 
     rotate_x: (a) ->
-        mat4.identity(@t)
-        mat4.rotateX(@t, @t, a)
-        mat4.multiply(@matrix, @matrix, @t)
+        @rotate_vec[0] += a
+
+    set_rotation_y: (a) ->
+        @rotate_vec[1] = a
 
     rotate_y: (a) ->
-        mat4.identity(@t)
-        mat4.rotateY(@t, @t, a)
-        mat4.multiply(@matrix, @matrix, @t)
+        @rotate_vec[1] += a
+
+    set_rotation_z: (a) ->
+        @rotate_vec[2] = a
 
     rotate_z: (a) ->
-        mat4.identity(@t)
-        mat4.rotateZ(@t, @t, a)
-        mat4.mulitply(@matrix, @matrix, @t)
+        @rotate_vec[2] += a
 
     scale: (x, y, z) ->
-        mat4.identity(@t)
-        mat4.scale(@t, @t, [x, y, z])
-        mat4.multiply(@matrix, @matrix, @t)
+        @scale_vec[0] *= x
+        @scale_vec[1] *= y
+        @scale_vec[2] *= z
 
 class UTIL.renderer
     constructor: (@g, @w, @h) ->
@@ -222,14 +265,17 @@ class UTIL.renderer
         @b = vec2.create()
         @temp = vec4.create()
         @t = mat4.create()
+        @frame = 0
 
     render_world: () ->
         @render_geometry(@world)
+        @frame += 1
 
     render_geometry: (geo) ->
         if geo instanceof UTIL.geometry
             @render_3d(geo)
         else if geo instanceof UTIL.geometry_2d
+            geo.render_prep()
             @render_2d(geo)
 
     render_2d: (geo) ->

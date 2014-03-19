@@ -26,7 +26,7 @@ init = () ->
 
     stage.addChild graphics
 
-    setInterval render_graphics, 150
+    setInterval render_graphics, 100
     requestAnimationFrame animate
 
 paper_current = 0
@@ -167,5 +167,21 @@ render_graphics = () ->
 animate = () ->
     renderer.render stage
     requestAnimationFrame animate
+
+person_facing_right = 1
+flip_person = () ->
+    person.rotate_y(Math.PI)
+    person_facing_right = !person_facing_right
+
+window.onkeydown = (event) ->
+    switch event.which
+        when 37
+            if person_facing_right
+                flip_person()
+            person.translate(0.1, 0, 0)
+        when 39
+            if not person_facing_right
+                flip_person()
+            person.translate(0.1, 0, 0)
 
 init()
