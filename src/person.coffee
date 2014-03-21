@@ -96,6 +96,27 @@ class PERSON.person extends UTIL.geometry_2d
         @head.translate(0, -0.5, 0)
         @neck.add(@head)
 
+        @r_brow = new UTIL.geometry_2d()
+        @r_brow.add_vertex([0, 0])
+        @r_brow.add_vertex([0.15, 0])
+        @r_brow.translate(0.05, -0.5, 0)
+        @r_brow.set_rotation_z(0.4)
+        @head.add(@r_brow)
+
+        @l_brow = new UTIL.geometry_2d()
+        @l_brow.add_vertex([0, 0])
+        @l_brow.add_vertex([-0.15, 0])
+        @l_brow.translate(-0.05, -0.5, 0)
+        @l_brow.set_rotation_z(-0.4)
+        @head.add(@l_brow)
+
+        @mouth = new UTIL.geometry_2d()
+        @mouth.add_vertex([-0.15, 0.05])
+        @mouth.add_vertex([0, 0])
+        @mouth.add_vertex([0.15, 0.05])
+        @mouth.translate(0, -0.2, 0)
+        @head.add(@mouth)
+
     update_head: () ->
         @head.set_rotation_x(@head_rotation[0] + noise.perlin2(@frame / @energy, @frame / @energy) * 0.2)
         @head.set_rotation_y(@head_rotation[1] + noise.perlin2(@frame / @energy, @frame / @energy) * 1)
@@ -122,22 +143,35 @@ class PERSON.person extends UTIL.geometry_2d
     happy: () ->
         @angry_wave = false
         @energy = 10
+        @l_brow.set_rotation_z(0)
+        @r_brow.set_rotation_z(0)
         @wave_speed = 2
         @l_arm.set_rotation_z(-0.2)
         @wave_position = -1.37
         @head_rotation[0] = 0
+        @mouth.vertices[0][1] = -0.05
+        @mouth.vertices[2][1] = -0.05
 
     angry: () ->
         @happy()
+        @energy = 5
+        @l_brow.set_rotation_z(0.4)
+        @r_brow.set_rotation_z(-0.4)
         @angry_wave = true
         @wave_speed = 1
         @wave_position = 0
+        @mouth.vertices[0][1] = 0
+        @mouth.vertices[2][1] = 0
 
     sad: () ->
+        @l_brow.set_rotation_z(-0.4)
+        @r_brow.set_rotation_z(0.4)
         @angry_wave = false
         @energy = 100
         @wave_speed = 4
         @l_arm.set_rotation_z(0.4)
         @wave_position = -1.75
         @head_rotation[0] = -1.1
+        @mouth.vertices[0][1] = 0.05
+        @mouth.vertices[2][1] = 0.05
 
