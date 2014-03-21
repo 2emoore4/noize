@@ -9,6 +9,7 @@ class PERSON.person extends UTIL.geometry_2d
         @wave_speed = 4
         @wave_position = -1.75
         @angry_wave = false
+        @walking = false
 
         super()
 
@@ -133,10 +134,22 @@ class PERSON.person extends UTIL.geometry_2d
         @torso.set_rotation_y(noise.perlin2(@frame / @energy, @frame / @energy) * 0.1)
         @torso.set_rotation_z(noise.perlin2(@frame / @energy, @frame / @energy) * 0.1)
 
+    walk: () ->
+        @hip.set_translation(0, 0.5 - Math.abs(Math.sin(@frame / 4) / 7), 0)
+        @hip.set_rotation_z(Math.sin(@frame / 4) / 20)
+        @torso.set_rotation_z(Math.sin((@frame / 4) - 2) / 30)
+        @r_upper_leg.set_rotation_x(-Math.sin(@frame / 4) / 2)
+        @l_upper_leg.set_rotation_x(-Math.sin((@frame / 4) - Math.PI) / 2)
+
     do_stuff: () ->
         @update_head()
-        @update_wave()
-        @update_torso()
+
+        #TODO move arms when switching states
+        if @walking
+            @walk()
+        else
+            @update_wave()
+            @update_torso()
 
         @frame += 1
 

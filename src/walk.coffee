@@ -33,7 +33,7 @@ init_bg = () ->
     paper_textures.push PIXI.Texture.fromImage "assets/paper3.png"
 
     paper_sprite = new PIXI.Sprite paper_textures[paper_current]
-#    stage.addChild paper_sprite
+    stage.addChild paper_sprite
 
 house = null
 init_house = () ->
@@ -117,20 +117,27 @@ flip_person = () ->
     person_facing_right = !person_facing_right
 
 window.onkeydown = (event) ->
+    console.log(event.which)
     switch event.which
         when 37
             drawing_renderer.rotate_y(0.05)
         when 38
-            drawing_renderer.rotate_x(0.05)
+            drawing_renderer.rotate_x(-0.05)
         when 39
             drawing_renderer.rotate_y(-0.05)
         when 40
-            drawing_renderer.rotate_x(-0.05)
+            drawing_renderer.rotate_x(0.05)
         when 65
             person.angry()
         when 72
             person.happy()
         when 83
             person.sad()
+        when 88
+            drawing_renderer.translate(0, 0, 1)
+        when 90
+            drawing_renderer.translate(0, 0, -1)
+        when 87
+            person.walking = !person.walking
 
 init()
