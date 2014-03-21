@@ -8,6 +8,7 @@ class PERSON.person extends UTIL.geometry_2d
         @energy = 100
         @wave_speed = 4
         @wave_position = -1.75
+        @angry_wave = false
 
         super()
 
@@ -101,7 +102,10 @@ class PERSON.person extends UTIL.geometry_2d
         @head.set_rotation_z(@head_rotation[2] + noise.perlin2(@frame / @energy, @frame / @energy) * 0.2)
 
     update_wave: () ->
-        @l_fore.set_rotation_z(@wave_position + Math.sin(@frame / @wave_speed) / 2)
+        if @angry_wave
+            @l_fore.set_rotation_x(@wave_position + Math.sin(@frame / @wave_speed) / 2)
+        else
+            @l_fore.set_rotation_z(@wave_position + Math.sin(@frame / @wave_speed) / 2)
 
     update_torso: () ->
         @torso.set_rotation_x(noise.perlin2(@frame / @energy, @frame / @energy) * 0.1)
@@ -116,13 +120,21 @@ class PERSON.person extends UTIL.geometry_2d
         @frame += 1
 
     happy: () ->
+        @angry_wave = false
         @energy = 10
         @wave_speed = 2
         @l_arm.set_rotation_z(-0.2)
         @wave_position = -1.37
         @head_rotation[0] = 0
 
+    angry: () ->
+        @happy()
+        @angry_wave = true
+        @wave_speed = 1
+        @wave_position = 0
+
     sad: () ->
+        @angry_wave = false
         @energy = 100
         @wave_speed = 4
         @l_arm.set_rotation_z(0.4)

@@ -126,6 +126,8 @@ window.onkeydown = (event) ->
             drawing_renderer.rotate_y(-0.05)
         when 40
             drawing_renderer.rotate_x(-0.05)
+        when 65
+            person.angry()
         when 72
             person.happy()
         when 83
