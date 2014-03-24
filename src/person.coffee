@@ -9,7 +9,7 @@ class PERSON.person extends UTIL.geometry_2d
         @wave_speed = 4
         @wave_position = -1.75
         @angry_wave = false
-        @walking = false
+        @walking = true
 
         super()
 
@@ -23,26 +23,28 @@ class PERSON.person extends UTIL.geometry_2d
         @r_upper_leg.add_vertex([0, 0])
         @r_upper_leg.add_vertex([0, 1.27])
         @r_upper_leg.translate(-0.25, 0, 0)
-        @r_upper_leg.rotate_z(0.15)
+#        @r_upper_leg.rotate_z(0.15)
         @hip.add(@r_upper_leg)
 
         @r_lower_leg = new UTIL.geometry_2d()
         @r_lower_leg.add_vertex([0, 0])
         @r_lower_leg.add_vertex([0, 1.27])
         @r_lower_leg.translate(0, 1.27, 0)
+        @r_lower_leg.rotate_x(-Math.PI / 7)
         @r_upper_leg.add(@r_lower_leg)
 
         @l_upper_leg = new UTIL.geometry_2d()
         @l_upper_leg.add_vertex([0, 0])
         @l_upper_leg.add_vertex([0, 1.27])
         @l_upper_leg.translate(0.25, 0, 0)
-        @l_upper_leg.rotate_z(-0.15)
+#        @l_upper_leg.rotate_z(-0.15)
         @hip.add(@l_upper_leg)
 
         @l_lower_leg = new UTIL.geometry_2d()
         @l_lower_leg.add_vertex([0, 0])
         @l_lower_leg.add_vertex([0, 1.27])
         @l_lower_leg.translate(0, 1.27, 0)
+        @l_lower_leg.rotate_x(-Math.PI / 7)
         @l_upper_leg.add(@l_lower_leg)
 
         @torso = new UTIL.geometry_2d()
@@ -135,16 +137,30 @@ class PERSON.person extends UTIL.geometry_2d
         @torso.set_rotation_z(noise.perlin2(@frame / @energy, @frame / @energy) * 0.1)
 
     walk: () ->
-        @hip.set_translation(0, 0.5 - Math.abs(Math.sin(@frame / 4) / 7), 0)
-        @hip.set_rotation_z(Math.sin(@frame / 4) / 20)
-        @torso.set_rotation_z(Math.sin((@frame / 4) - 2) / 30)
-        @r_upper_leg.set_rotation_x(-Math.sin(@frame / 4) / 2)
-        @l_upper_leg.set_rotation_x(-Math.sin((@frame / 4) - Math.PI) / 2)
+        @hip.set_translation(0, 0.6 - Math.abs(Math.cos(@frame / 3) / 10), 0)
+        @hip.set_rotation_z(Math.sin(@frame / 3) / 50)
+        @hip.set_rotation_y(-Math.sin(@frame / 3) / 7)
+        @torso.set_rotation_z(Math.sin((@frame / 3) - 2) / 40)
+        @torso.set_rotation_x(-0.1 + Math.sin(@frame / 2) / 40)
+        @r_upper_leg.set_rotation_x(-Math.sin(@frame / 3) / 2.5 + 0.2)
+        @l_upper_leg.set_rotation_x(-Math.sin((@frame / 3) - Math.PI) / 2.5 + 0.2)
+        @r_lower_leg.set_rotation_x(-Math.PI / 8 + Math.sin(@frame / 3) / 4)
+        @l_lower_leg.set_rotation_x(-Math.PI / 8 + Math.sin(@frame / 3 - Math.PI) / 4)
+        @r_arm.set_rotation_z(-Math.PI / 2 + 0.1)
+        @r_arm.set_rotation_x(Math.sin(@frame / 3) / 2)
+        @r_fore.set_rotation_z(0)
+        @r_fore.set_rotation_y(0.2)
+        @l_arm.set_rotation_z(Math.PI / 2 + 0.1)
+        @l_arm.set_rotation_x(-Math.sin(@frame / 3) / 2)
+        @l_fore.set_rotation_z(0)
+        @l_fore.set_rotation_y(-0.2)
 
     do_stuff: () ->
         @update_head()
 
-        #TODO move arms when switching states
+        # TODO move arms when switching states
+        # also change the vertical-ness of the legs
+        # and the default positions of the legs
         if @walking
             @walk()
         else

@@ -33,7 +33,7 @@ init_bg = () ->
     paper_textures.push PIXI.Texture.fromImage "assets/paper3.png"
 
     paper_sprite = new PIXI.Sprite paper_textures[paper_current]
-    stage.addChild paper_sprite
+#    stage.addChild paper_sprite
 
 house = null
 init_house = () ->
