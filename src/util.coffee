@@ -162,6 +162,13 @@ class UTIL.geometry
         mat4.scale(@t, @t, [x, y, z])
         mat4.multiply(@matrix, @matrix, @t)
 
+class UTIL.geometry_state
+    constructor: () ->
+        @rotate_vec = vec3.create()
+        @translate_vec = vec3.create()
+        @scale_vec = vec3.create()
+        vec3.set(@scale_vec, 1, 1, 1)
+
 class UTIL.geometry_2d
     constructor: () ->
         @vertices = new Array()
@@ -172,15 +179,46 @@ class UTIL.geometry_2d
         @rotate_vec = vec3.create()
         @translate_vec = vec3.create()
         @scale_vec = vec3.create()
-        @reset_matrix()
+        @r_diff = vec3.create()
+        @t_diff = vec3.create()
+        @s_diff = vec3.create()
+        @inc_r_diff = vec3.create()
+        @inc_t_diff = vec3.create()
+        @inc_s_diff = vec3.create()
+        @states = new Object()
+        @states["default"] = new UTIL.geometry_state()
 
     add_vertex: (vertex) ->
         @vertices.push([vertex[0], vertex[1], 0])
 
-    reset_matrix: () ->
-        vec3.set(@rotate_vec, 0, 0, 0)
-        vec3.set(@translate_vec, 0, 0, 0)
-        vec3.set(@scale_vec, 1, 1, 1)
+    reset_state: () ->
+        @change_state("default")
+
+    change_state: (state_name) ->
+        state = @states[state_name]
+
+        vec3.subtract(@r_diff, state.rotate_vec, @rotate_vec)
+        vec3.subtract(@t_diff, state.translate_vec, @translate_vec)
+        vec3.subtract(@s_diff, state.scale_vec, @scale_vec)
+
+        vec3.scale(@inc_r_diff, @r_diff, 0.1)
+        vec3.scale(@inc_t_diff, @t_diff, 0.1)
+        vec3.scale(@inc_s_diff, @s_diff, 0.1)
+
+        `
+        for (i = 0; i < 10; i++) {
+            (function(r, rd, t, td, s, sd) {
+                setTimeout(function() {
+                    vec3.add(r, r, rd);
+                    vec3.add(t, t, td);
+                    vec3.add(s, s, sd);
+                }, 20 * i);
+            }).call(this, this.rotate_vec, this.inc_r_diff, this.translate_vec, this.inc_t_diff, this.scale_vec, this.inc_s_diff);
+        }
+        `
+
+        for i in [0...@children.length]
+            @children[i].change_state(state_name)
 
     transform_by_parent: (parent) ->
         mat4.copy(@glob_matrix, parent.glob_matrix)

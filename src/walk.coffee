@@ -62,8 +62,9 @@ init_house = () ->
     door.add_vertex  [0.3, 2]
     house.add door
 
-    house.translate(3, -5, -5)
-    house.scale(4, 4, 4)
+    vec3.set(house.states["default"].translate_vec, 3, -5, -5)
+    vec3.set(house.states["default"].scale_vec, 4, 4, 4)
+    house.reset_state()
     drawing_renderer.world.add(house)
 
 next_bg = () ->
@@ -81,14 +82,16 @@ init_ground = () ->
     ground.add_vertex([-8, 3])
     ground.add_vertex([8, 3])
 
+    ground.reset_state()
     drawing_renderer.world.add(ground)
 
     far_ground = new UTIL.geometry_2d()
 
     far_ground.add_vertex([-8, 3])
     far_ground.add_vertex([8, 3])
-    far_ground.translate(0, 0, -5)
+    vec3.set(far_ground.states["default"].translate_vec, 0, 0, -5)
 
+    far_ground.reset_state()
     drawing_renderer.world.add(far_ground)
 
 person = null
@@ -138,6 +141,6 @@ window.onkeydown = (event) ->
         when 90
             drawing_renderer.translate(0, 0, -1)
         when 87
-            person.walking = !person.walking
+            person.toggle_walk()
 
 init()

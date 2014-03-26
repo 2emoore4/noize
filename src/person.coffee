@@ -16,35 +16,33 @@ class PERSON.person extends UTIL.geometry_2d
         @hip = new UTIL.geometry_2d()
         @hip.add_vertex([-0.25, 0])
         @hip.add_vertex([0.25, 0])
-        @hip.translate(0, 0.5, 0)
+        vec3.set(@hip.states["default"].translate_vec, 0, 0.5, 0)
         @add(@hip)
 
         @r_upper_leg = new UTIL.geometry_2d()
         @r_upper_leg.add_vertex([0, 0])
         @r_upper_leg.add_vertex([0, 1.27])
-        @r_upper_leg.translate(-0.25, 0, 0)
-#        @r_upper_leg.rotate_z(0.15)
+        vec3.set(@r_upper_leg.states["default"].translate_vec, -0.25, 0, 0)
+        vec3.set(@r_upper_leg.states["default"].rotate_vec, 0, 0, 0.15)
         @hip.add(@r_upper_leg)
 
         @r_lower_leg = new UTIL.geometry_2d()
         @r_lower_leg.add_vertex([0, 0])
         @r_lower_leg.add_vertex([0, 1.27])
-        @r_lower_leg.translate(0, 1.27, 0)
-        @r_lower_leg.rotate_x(-Math.PI / 7)
+        vec3.set(@r_lower_leg.states["default"].translate_vec, 0, 1.27, 0)
         @r_upper_leg.add(@r_lower_leg)
 
         @l_upper_leg = new UTIL.geometry_2d()
         @l_upper_leg.add_vertex([0, 0])
         @l_upper_leg.add_vertex([0, 1.27])
-        @l_upper_leg.translate(0.25, 0, 0)
-#        @l_upper_leg.rotate_z(-0.15)
+        vec3.set(@l_upper_leg.states["default"].translate_vec, 0.25, 0, 0)
+        vec3.set(@l_upper_leg.states["default"].rotate_vec, 0, 0, -0.15)
         @hip.add(@l_upper_leg)
 
         @l_lower_leg = new UTIL.geometry_2d()
         @l_lower_leg.add_vertex([0, 0])
         @l_lower_leg.add_vertex([0, 1.27])
-        @l_lower_leg.translate(0, 1.27, 0)
-        @l_lower_leg.rotate_x(-Math.PI / 7)
+        vec3.set(@l_lower_leg.states["default"].translate_vec, 0, 1.27, 0)
         @l_upper_leg.add(@l_lower_leg)
 
         @torso = new UTIL.geometry_2d()
@@ -55,35 +53,31 @@ class PERSON.person extends UTIL.geometry_2d
         @shoulders = new UTIL.geometry_2d()
         @shoulders.add_vertex([-0.25, 0])
         @shoulders.add_vertex([0.25, 0])
-        @shoulders.translate(0, -2, 0)
+        vec3.set(@shoulders.states["default"].translate_vec, 0, -2, 0)
         @torso.add(@shoulders)
 
         @l_arm = new UTIL.geometry_2d()
         @l_arm.add_vertex([0, 0])
         @l_arm.add_vertex([1, 0])
-        @l_arm.translate(0.25, 0, 0)
-        @l_arm.rotate_z(0.4)
+        vec3.set(@l_arm.states["default"].translate_vec, 0.25, 0, 0)
         @shoulders.add(@l_arm)
 
         @l_fore = new UTIL.geometry_2d()
         @l_fore.add_vertex([0, 0])
         @l_fore.add_vertex([1, 0])
-        @l_fore.translate(1, 0, 0)
-        @l_fore.rotate_z(@wave_position)
+        vec3.set(@l_fore.states["default"].translate_vec, 1, 0, 0)
         @l_arm.add(@l_fore)
 
         @r_arm = new UTIL.geometry_2d()
         @r_arm.add_vertex([0, 0])
         @r_arm.add_vertex([-1, 0])
-        @r_arm.translate(-0.25, 0, 0)
-        @r_arm.rotate_z(-Math.PI / 4)
+        vec3.set(@r_arm.states["default"].translate_vec, -0.25, 0, 0)
         @shoulders.add(@r_arm)
 
         @r_fore = new UTIL.geometry_2d()
         @r_fore.add_vertex([0, 0])
         @r_fore.add_vertex([-1, 0])
-        @r_fore.translate(-1, 0, 0)
-        @r_fore.rotate_z(-1.25)
+        vec3.set(@r_fore.states["default"].translate_vec, -1, 0, 0)
         @r_arm.add(@r_fore)
 
         @neck = new UTIL.geometry_2d()
@@ -96,29 +90,31 @@ class PERSON.person extends UTIL.geometry_2d
         @head.add_vertex([0.5, 0])
         @head.add_vertex([0, -1])
         @head.add_vertex([-0.5, 0])
-        @head.translate(0, -0.5, 0)
+        vec3.set(@head.states["default"].translate_vec, 0, -0.5, 0)
         @neck.add(@head)
 
         @r_brow = new UTIL.geometry_2d()
         @r_brow.add_vertex([0, 0])
         @r_brow.add_vertex([0.15, 0])
-        @r_brow.translate(0.05, -0.5, 0)
-        @r_brow.set_rotation_z(0.4)
+        vec3.set(@r_brow.states["default"].translate_vec, 0.05, -0.5, 0)
+        vec3.set(@r_brow.states["default"].rotate_vec, 0, 0, 0.4)
         @head.add(@r_brow)
 
         @l_brow = new UTIL.geometry_2d()
         @l_brow.add_vertex([0, 0])
         @l_brow.add_vertex([-0.15, 0])
-        @l_brow.translate(-0.05, -0.5, 0)
-        @l_brow.set_rotation_z(-0.4)
+        vec3.set(@l_brow.states["default"].translate_vec, -0.05, -0.5, 0)
+        vec3.set(@l_brow.states["default"].rotate_vec, 0, 0, -0.4)
         @head.add(@l_brow)
 
         @mouth = new UTIL.geometry_2d()
         @mouth.add_vertex([-0.15, 0.05])
         @mouth.add_vertex([0, 0])
         @mouth.add_vertex([0.15, 0.05])
-        @mouth.translate(0, -0.2, 0)
+        vec3.set(@mouth.states["default"].translate_vec, 0, -0.2, 0)
         @head.add(@mouth)
+
+        @reset_state()
 
     update_head: () ->
         @head.set_rotation_x(@head_rotation[0] + noise.perlin2(@frame / @energy, @frame / @energy) * 0.2)
@@ -138,13 +134,16 @@ class PERSON.person extends UTIL.geometry_2d
 
     walk: () ->
         @hip.set_translation(0, 0.6 - Math.abs(Math.cos(@frame / 3) / 10), 0)
-        @hip.set_rotation_z(Math.sin(@frame / 3) / 30)
+        @hip.set_rotation_z(Math.sin(@frame / 3) / 50)
         @hip.set_rotation_y(-Math.sin(@frame / 3) / 10)
         @shoulders.set_rotation_y(Math.sin(@frame / 3) / 10)
-        @torso.set_rotation_z(Math.sin((@frame / 3) - 2) / 40)
-        @torso.set_rotation_x(-0.1 + Math.sin(@frame / 2) / 40)
+        @torso.set_rotation_z(Math.cos((@frame / 3) - 2) / 40)
+        @torso.set_rotation_x(-0.1 + Math.sin(@frame / 1.5 - 1.5) / 40)
+        @neck.set_rotation_x(Math.sin(@frame / 1.5) / 20)
         @r_upper_leg.set_rotation_x(-Math.sin(@frame / 3) / 2.5 + 0.2)
+        @r_upper_leg.set_rotation_z(0)
         @l_upper_leg.set_rotation_x(-Math.sin((@frame / 3) - Math.PI) / 2.5 + 0.2)
+        @l_upper_leg.set_rotation_z(0)
         @r_lower_leg.set_rotation_x(-Math.PI / 8 + Math.sin(@frame / 3) / 4)
         @l_lower_leg.set_rotation_x(-Math.PI / 8 + Math.sin(@frame / 3 - Math.PI) / 4)
         @r_arm.set_rotation_z(-Math.PI / 2 + 0.05)
@@ -156,13 +155,23 @@ class PERSON.person extends UTIL.geometry_2d
         @l_fore.set_rotation_z(0)
         @l_fore.set_rotation_y(-0.2 + Math.sin(@frame / 3 - 1) / 5)
 
-    do_stuff: () ->
-        @update_head()
+    toggle_walk: () ->
+        if @walking
+            # move everything back to standing state
+            @stand()
+        @walking = !@walking
 
+    stand: () ->
+        for i in [0...@children.length]
+            @children[i].reset_state()
+
+    do_stuff: () ->
         # TODO move arms when switching states
         # also change the vertical-ness of the legs
         # and the default positions of the legs
-        @walk()
+        if @walking
+            @walk()
+            @update_head()
 
         @frame += 1
 
@@ -172,7 +181,6 @@ class PERSON.person extends UTIL.geometry_2d
         @l_brow.set_rotation_z(0)
         @r_brow.set_rotation_z(0)
         @wave_speed = 2
-        @l_arm.set_rotation_z(-0.2)
         @wave_position = -1.37
         @head_rotation[0] = 0
         @mouth.vertices[0][1] = -0.05
@@ -195,7 +203,6 @@ class PERSON.person extends UTIL.geometry_2d
         @angry_wave = false
         @energy = 100
         @wave_speed = 4
-        @l_arm.set_rotation_z(0.4)
         @wave_position = -1.75
         @head_rotation[0] = -1.1
         @mouth.vertices[0][1] = 0.05
