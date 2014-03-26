@@ -138,22 +138,23 @@ class PERSON.person extends UTIL.geometry_2d
 
     walk: () ->
         @hip.set_translation(0, 0.6 - Math.abs(Math.cos(@frame / 3) / 10), 0)
-        @hip.set_rotation_z(Math.sin(@frame / 3) / 50)
-        @hip.set_rotation_y(-Math.sin(@frame / 3) / 7)
+        @hip.set_rotation_z(Math.sin(@frame / 3) / 30)
+        @hip.set_rotation_y(-Math.sin(@frame / 3) / 10)
+        @shoulders.set_rotation_y(Math.sin(@frame / 3) / 10)
         @torso.set_rotation_z(Math.sin((@frame / 3) - 2) / 40)
         @torso.set_rotation_x(-0.1 + Math.sin(@frame / 2) / 40)
         @r_upper_leg.set_rotation_x(-Math.sin(@frame / 3) / 2.5 + 0.2)
         @l_upper_leg.set_rotation_x(-Math.sin((@frame / 3) - Math.PI) / 2.5 + 0.2)
         @r_lower_leg.set_rotation_x(-Math.PI / 8 + Math.sin(@frame / 3) / 4)
         @l_lower_leg.set_rotation_x(-Math.PI / 8 + Math.sin(@frame / 3 - Math.PI) / 4)
-        @r_arm.set_rotation_z(-Math.PI / 2 + 0.1)
+        @r_arm.set_rotation_z(-Math.PI / 2 + 0.05)
         @r_arm.set_rotation_x(Math.sin(@frame / 3) / 2)
         @r_fore.set_rotation_z(0)
-        @r_fore.set_rotation_y(0.2)
-        @l_arm.set_rotation_z(Math.PI / 2 + 0.1)
+        @r_fore.set_rotation_y(0.2 + Math.sin(@frame / 3 - 1) / 5)
+        @l_arm.set_rotation_z(Math.PI / 2 - 0.05)
         @l_arm.set_rotation_x(-Math.sin(@frame / 3) / 2)
         @l_fore.set_rotation_z(0)
-        @l_fore.set_rotation_y(-0.2)
+        @l_fore.set_rotation_y(-0.2 + Math.sin(@frame / 3 - 1) / 5)
 
     do_stuff: () ->
         @update_head()
@@ -161,11 +162,7 @@ class PERSON.person extends UTIL.geometry_2d
         # TODO move arms when switching states
         # also change the vertical-ness of the legs
         # and the default positions of the legs
-        if @walking
-            @walk()
-        else
-            @update_wave()
-            @update_torso()
+        @walk()
 
         @frame += 1
 
