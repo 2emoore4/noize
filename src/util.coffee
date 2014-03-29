@@ -201,18 +201,18 @@ class UTIL.geometry_2d
         vec3.subtract(@t_diff, state.translate_vec, @translate_vec)
         vec3.subtract(@s_diff, state.scale_vec, @scale_vec)
 
-        vec3.scale(@inc_r_diff, @r_diff, 0.1)
-        vec3.scale(@inc_t_diff, @t_diff, 0.1)
-        vec3.scale(@inc_s_diff, @s_diff, 0.1)
+        vec3.scale(@inc_r_diff, @r_diff, 0.05)
+        vec3.scale(@inc_t_diff, @t_diff, 0.05)
+        vec3.scale(@inc_s_diff, @s_diff, 0.05)
 
         `
-        for (i = 0; i < 10; i++) {
+        for (i = 0; i < 20; i++) {
             (function(r, rd, t, td, s, sd) {
                 setTimeout(function() {
                     vec3.add(r, r, rd);
                     vec3.add(t, t, td);
                     vec3.add(s, s, sd);
-                }, 20 * i);
+                }, 10 * i);
             }).call(this, this.rotate_vec, this.inc_r_diff, this.translate_vec, this.inc_t_diff, this.scale_vec, this.inc_s_diff);
         }
         `
@@ -292,6 +292,11 @@ class UTIL.geometry_2d
         @scale_vec[0] *= x
         @scale_vec[1] *= y
         @scale_vec[2] *= z
+
+    set_scale: (x, y, z) ->
+        @scale_vec[0] = x
+        @scale_vec[1] = y
+        @scale_vec[2] = z
 
 class UTIL.renderer
     constructor: (@g, @w, @h) ->
