@@ -226,6 +226,18 @@ class PERSON.person extends UTIL.geometry_2d
         `
         null
 
+    shrug_shoulders: () ->
+        `
+        for (var i = 0; i < Math.PI; i += 0.1) {
+            (function(shoulders, i) {
+                setTimeout(function() {
+                    shoulders.set_translation(0, -2 - Math.sin(i) / 4, 0);
+                }, 120 * i);
+            }).call(this, this.shoulders, i);
+        }
+        `
+        null
+
     happy: () ->
         @angry_wave = false
         @energy = 10

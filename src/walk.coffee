@@ -111,6 +111,8 @@ window.onkeydown = (event) ->
             person.shake_head()
         when 83 # 's'
             person.sad()
+        when 85 # 'u'
+            person.shrug_shoulders()
         when 87 # 'w'
             person.toggle_walk()
         when 89 # 'y'
