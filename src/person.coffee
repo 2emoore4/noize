@@ -47,14 +47,22 @@ class PERSON.person extends UTIL.geometry_2d
         @hip.add(@torso)
 
         @shoulders = new UTIL.geometry_2d()
-        @shoulders.add_vertex([-0.25, 0])
-        @shoulders.add_vertex([0.25, 0])
         @torso.add(@shoulders)
+
+        @r_shoulder = new UTIL.geometry_2d()
+        @r_shoulder.add_vertex([0, 0])
+        @r_shoulder.add_vertex([-0.25, 0])
+        @shoulders.add(@r_shoulder)
+
+        @l_shoulder = new UTIL.geometry_2d()
+        @l_shoulder.add_vertex([0, 0])
+        @l_shoulder.add_vertex([0.25, 0])
+        @shoulders.add(@l_shoulder)
 
         @l_arm = new UTIL.geometry_2d()
         @l_arm.add_vertex([0, 0])
         @l_arm.add_vertex([1, 0])
-        @shoulders.add(@l_arm)
+        @l_shoulder.add(@l_arm)
 
         @l_fore = new UTIL.geometry_2d()
         @l_fore.add_vertex([0, 0])
@@ -64,7 +72,7 @@ class PERSON.person extends UTIL.geometry_2d
         @r_arm = new UTIL.geometry_2d()
         @r_arm.add_vertex([0, 0])
         @r_arm.add_vertex([-1, 0])
-        @shoulders.add(@r_arm)
+        @r_shoulder.add(@r_arm)
 
         @r_fore = new UTIL.geometry_2d()
         @r_fore.add_vertex([0, 0])
@@ -229,11 +237,14 @@ class PERSON.person extends UTIL.geometry_2d
     shrug_shoulders: () ->
         `
         for (var i = 0; i < Math.PI; i += 0.1) {
-            (function(shoulders, i) {
+            (function(r_shoulder, l_shoulder, i) {
                 setTimeout(function() {
-                    shoulders.set_translation(0, -2 - Math.sin(i) / 4, 0);
+                    r_shoulder.set_translation(0, -Math.sin(i) / 8, 0);
+                    r_shoulder.set_rotation_z(Math.sin(i) / 6);
+                    l_shoulder.set_translation(0, -Math.sin(i) / 8, 0);
+                    l_shoulder.set_rotation_z(-Math.sin(i) / 6);
                 }, 120 * i);
-            }).call(this, this.shoulders, i);
+            }).call(this, this.r_shoulder, this.l_shoulder, i);
         }
         `
         null
