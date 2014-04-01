@@ -107,9 +107,13 @@ window.onkeydown = (event) ->
             person.sit()
         when 75 # 'k'
             person.stand()
+        when 78 # 'n'
+            person.shake_head()
         when 83 # 's'
             person.sad()
         when 87 # 'w'
             person.toggle_walk()
+        when 89 # 'y'
+            person.nod_head()
 
 init()

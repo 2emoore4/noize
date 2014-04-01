@@ -199,10 +199,32 @@ class PERSON.person extends UTIL.geometry_2d
         if @walking
             @walk()
             @update_head()
-        else
-            @update_head()
 
         @frame += 1
+
+    shake_head: () ->
+        `
+        for (var i = 0; i < 50; i++) {
+            (function(head, i) {
+                setTimeout(function() {
+                    head.set_rotation_y(Math.sin(i / 5) / 1.4);
+                }, 20 * i);
+            }).call(this, this.head, i);
+        }
+        `
+        console.log("shake")
+
+    nod_head: () ->
+        `
+        for (var i = 0; i < 50; i++) {
+            (function(head, i) {
+                setTimeout(function() {
+                    head.set_rotation_x(-0.5 - Math.sin(i / 5) / 1.4);
+                }, 20 * i);
+            }).call(this, this.head, i);
+        }
+        `
+        console.log("blah")
 
     happy: () ->
         @angry_wave = false
