@@ -212,7 +212,7 @@ class PERSON.person extends UTIL.geometry_2d
             }).call(this, this.head, i);
         }
         `
-        console.log("shake")
+        null
 
     nod_head: () ->
         `
@@ -224,7 +224,7 @@ class PERSON.person extends UTIL.geometry_2d
             }).call(this, this.head, i);
         }
         `
-        console.log("blah")
+        null
 
     happy: () ->
         @angry_wave = false
