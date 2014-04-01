@@ -1,5 +1,8 @@
 window.UTIL = {}
 
+###*
+* Class to hold coordinates of a three dimensional point.
+###
 class UTIL.vertex
     constructor: (x, y, z) ->
         @coordinates = [x, y, z]
@@ -7,6 +10,9 @@ class UTIL.vertex
     set: (pos, value) ->
         @coordinates[pos] = value
 
+###*
+* Class to hold collection of vertices which are connected to make a single face.
+###
 class UTIL.face
     constructor: (zero, one, two, three) ->
         @vertices = [zero, one, two, three]
@@ -19,7 +25,9 @@ class UTIL.face
 
     length: () ->
         @vertices.length
-
+###*
+* Collection of attributes of a 3d geometry and functions to transform them.
+###
 class UTIL.geometry
     constructor: () ->
         @mesh_m = 10
@@ -31,10 +39,19 @@ class UTIL.geometry
         @children = new Array()
         @t = mat4.create()
 
+    ###*
+    * Multiplies this geometry's global matrix by its parent's global matrix. This ensures that
+    * all of the parent geometry's transformations are corrently applied to this geometry.
+    * @param {UTIL.geometry} parent geometry
+    ###
     transform_by_parent: (parent) ->
         mat4.copy(@glob_matrix, parent.glob_matrix)
         mat4.multiply(@glob_matrix, @glob_matrix, @matrix)
 
+    ###*
+    * Factory method to create cube primitive.
+    * @return {UTIL.geometry} this geometry
+    ###
     cube: () ->
         @vertices = [
             new UTIL.vertex(-1, -1, 1), new UTIL.vertex(1, -1, 1), new UTIL.vertex(1, 1, 1), new UTIL.vertex(-1, 1, 1),
@@ -56,6 +73,10 @@ class UTIL.geometry
 
         this
 
+    ###*
+    * Factory method to create sphere primitive.
+    * @return {UTIL.geometry} this geometry
+    ###
     sphere: () ->
         @vertices = new Array((@mesh_m + 1) * (@mesh_n + 1))
         @faces = new Array(@mesh_m * @mesh_n)
@@ -74,6 +95,12 @@ class UTIL.geometry
 
         this
 
+    ###*
+    * Factory method to create torus primitive.
+    * @param {number} outer radius
+    * @param {number} inner radius
+    * @return {UTIL.geometry} this geometry
+    ###
     torus: (big_r, little_r) ->
         @vertices = new Array((@mesh_m + 1) * (@mesh_n + 1))
         @faces = new Array(@mesh_m * @mesh_n)
@@ -92,6 +119,10 @@ class UTIL.geometry
 
         this
 
+    ###*
+    * Factory method to create cylinder primitive.
+    * @return {UTIL.geometry} this geometry
+    ###
     cylinder: () ->
         @vertices = new Array((@mesh_m + 1) * (@mesh_n + 1))
         @faces = new Array(@mesh_m * @mesh_n)
@@ -115,53 +146,95 @@ class UTIL.geometry
 
         this
 
+    ###*
+    * Helper function for cylinder factory. Determines if a given vertex is on the outer
+    * cap of the cylinder.
+    * @return {number} 1 if on cap, 0 if not on cap
+    ###
     r: (v) ->
         if v is 0 or v is 1 then 0 else 1
 
+    ###*
+    * Groups vertices into faces based on the order which they were created by one of
+    * the factory methods.
+    ###
     mesh_to_faces: () ->
         for m in [0...@mesh_m]
             for n in [0...@mesh_n]
                 current_face = m + (@mesh_m * n)
                 @faces[current_face] = new UTIL.face @point_to_vertex(m, n), @point_to_vertex(m + 1, n), @point_to_vertex(m + 1, n + 1), @point_to_vertex(m, n + 1)
 
+    ###*
+    * Converts a given point on the mesh to the index of that point in the vertex array.
+    * @return {number} index of vertex in array
+    ###
     point_to_vertex: (m, n) ->
         m + ((@mesh_m + 1) * n)
 
+    ###*
+    * @return {boolean} true if this geometry contains any vertices, else false.
+    ###
     has_vertex: () ->
         if @vertices.length == 0 then false else true
 
+    ###*
+    * Adds a given geometry to list of children.
+    ###
     add: (child) ->
         @children.push child
 
+    ###*
+    * Finds and removes a given geometry from list of children.
+    ###
     remove: (child) ->
         index = @children.indexOf child
         @children = @children.splice index, 1
 
+    ###*
+    * Incremental translation. Adds to current translation.
+    ###
     translate: (x, y, z) ->
         mat4.identity(@t)
         mat4.translate(@t, @t, [x, y, z])
         mat4.multiply(@matrix, @matrix, @t)
 
+    ###*
+    * Incremental rotation. Adds to current rotation.
+    ###
     rotate_x: (a) ->
         mat4.identity(@t)
         mat4.rotateX(@t, @t, a)
         mat4.multiply(@matrix, @matrix, @t)
 
+    ###*
+    * Incremental rotation. Adds to current rotation.
+    ###
     rotate_y: (a) ->
         mat4.identity(@t)
         mat4.rotateY(@t, @t, a)
         mat4.multiply(@matrix, @matrix, @t)
 
+    ###*
+    * Incremental rotation. Adds to current rotation.
+    ###
     rotate_z: (a) ->
         mat4.identity(@t)
         mat4.rotateZ(@t, @t, a)
         mat4.multiply(@matrix, @matrix, @t)
 
+    ###*
+    * Incremental scale. Multiplies to current scale.
+    ###
     scale: (x, y, z) ->
         mat4.identity(@t)
         mat4.scale(@t, @t, [x, y, z])
         mat4.multiply(@matrix, @matrix, @t)
 
+###*
+* Holds three vectors which combine to create a 'steady-state' for a geometry. These states
+* can be selected and changed to create seamless transitions between multiple states. All of
+* the transition logic is done in the actual geometry class.
+###
 class UTIL.geometry_state
     constructor: () ->
         @rotate_vec = vec3.create()
@@ -169,6 +242,9 @@ class UTIL.geometry_state
         @scale_vec = vec3.create()
         vec3.set(@scale_vec, 1, 1, 1)
 
+###*
+* Collection of attributes of a 2d geometry and functions to transform them.
+###
 class UTIL.geometry_2d
     constructor: () ->
         @vertices = new Array()
@@ -188,12 +264,24 @@ class UTIL.geometry_2d
         @states = new Object()
         @states["default"] = new UTIL.geometry_state()
 
+    ###*
+    * Adds two-dimensional vertex to list of vertices, with default z value of 0. All vertices
+    * start with this z value, so that they are 'drawn flat'.
+    ###
     add_vertex: (vertex) ->
         @vertices.push([vertex[0], vertex[1], 0])
 
+    ###*
+    * Transforms geometry back to its default state.
+    ###
     reset_state: () ->
         @change_state("default")
 
+    ###*
+    * Transforms this gemoetry based on the three vectors contained in the given state. Rather
+    * than perform the transformation immediately, it performs a bunch of incremental
+    * transitions, so that it appears smooth.
+    ###
     change_state: (state_name) ->
         state = @states[state_name]
 
@@ -220,10 +308,19 @@ class UTIL.geometry_2d
         for i in [0...@children.length]
             @children[i].change_state(state_name)
 
+    ###*
+    * Multiplies this geometry's global matrix by its parent's global matrix. This ensures that
+    * all of the parent geometry's transformations are corrently applied to this geometry.
+    * @param {UTIL.geometry} parent geometry
+    ###
     transform_by_parent: (parent) ->
         mat4.copy(@glob_matrix, parent.glob_matrix)
         mat4.multiply(@glob_matrix, @glob_matrix, @matrix)
 
+    ###*
+    * Sets current transformation matrix based on this geometry's global translation,
+    * rotation, and scale vectors.
+    ###
     render_prep: () ->
         mat4.identity(@matrix)
 
@@ -252,47 +349,86 @@ class UTIL.geometry_2d
             mat4.scale(@t, @t, @scale_vec)
             mat4.multiply(@matrix, @matrix, @t)
 
+    ###*
+    * @return {boolean} true if this geometry contains any vertices, else false.
+    ###
     has_vertex: () ->
         if @vertices.length == 0 then false else true
 
+    ###*
+    * Adds a given geometry to list of children.
+    ###
     add: (child) ->
         @children.push child
 
+    ###*
+    * Finds and removes a given geometry from list of children.
+    ###
     remove: (child) ->
         index = @children.indexOf child
         @children = @children.splice index, 1
 
+    ###*
+    * Absolute translation. Equivalant of resetting matrix and translating.
+    ###
     set_translation: (x, y, z) ->
         vec3.set(@translate_vec, x, y, z)
 
+    ###*
+    * Incremental translation. Adds to current translation.
+    ###
     translate: (x, y, z) ->
         @translate_vec[0] += x
         @translate_vec[1] += y
         @translate_vec[2] += z
 
+    ###*
+    * Absolute rotation. Equivalent of resetting matrix and rotating.
+    ###
     set_rotation_x: (a) ->
         @rotate_vec[0] = a
 
+    ###*
+    * Incremental rotation. Adds to current rotation.
+    ###
     rotate_x: (a) ->
         @rotate_vec[0] += a
 
+    ###*
+    * Absolute rotation. Equivalent of resetting matrix and rotating.
+    ###
     set_rotation_y: (a) ->
         @rotate_vec[1] = a
 
+    ###*
+    * Incremental rotation. Adds to current rotation.
+    ###
     rotate_y: (a) ->
         @rotate_vec[1] += a
 
+    ###*
+    * Absolute rotation. Equivalent of resetting matrix and rotating.
+    ###
     set_rotation_z: (a) ->
         @rotate_vec[2] = a
 
+    ###*
+    * Incremental rotation. Adds to current rotation.
+    ###
     rotate_z: (a) ->
         @rotate_vec[2] += a
 
+    ###*
+    * Incremental scale. Multiplies to current scale.
+    ###
     scale: (x, y, z) ->
         @scale_vec[0] *= x
         @scale_vec[1] *= y
         @scale_vec[2] *= z
 
+    ###*
+    * Absolute scale. Equivalent of resetting matrix and scaling.
+    ###
     set_scale: (x, y, z) ->
         @scale_vec[0] = x
         @scale_vec[1] = y
