@@ -122,25 +122,25 @@ flip_person = () ->
 window.onkeydown = (event) ->
     console.log(event.which)
     switch event.which
-        when 37
+        when 37 # left arrow
             drawing_renderer.rotate_y(0.05)
-        when 38
+        when 38 # right arrow
             drawing_renderer.rotate_x(-0.05)
-        when 39
+        when 39 # up arrow
             drawing_renderer.rotate_y(-0.05)
-        when 40
+        when 40 # down arrow
             drawing_renderer.rotate_x(0.05)
-        when 65
+        when 65 # 'a'
             person.angry()
-        when 72
+        when 72 # 'h'
             person.happy()
-        when 83
+        when 83 # 's'
             person.sad()
-        when 88
+        when 88 # 'x'
             drawing_renderer.translate(0, 0, 1)
-        when 90
+        when 90 # 'z'
             drawing_renderer.translate(0, 0, -1)
-        when 87
+        when 87 # 'w'
             person.toggle_walk()
 
 init()
