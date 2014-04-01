@@ -446,6 +446,9 @@ class UTIL.renderer
         @t = mat4.create()
         @frame = 0
 
+    ###*
+    * Renders all geometries.
+    ###
     render_world: () ->
         @render_geometry(@world)
         @frame += 1
@@ -457,6 +460,10 @@ class UTIL.renderer
             geo.render_prep()
             @render_2d(geo)
 
+    ###*
+    * Renders a 2d geometry by performing matrix transformations and projecting 3d points
+    * to 2d window space. Then renders all children of this geometry.
+    ###
     render_2d: (geo) ->
         if geo.has_vertex()
             for i in [1...geo.vertices.length]
@@ -472,6 +479,10 @@ class UTIL.renderer
             child.transform_by_parent(geo)
             @render_geometry(child)
 
+    ###*
+    * Renders a 3d geometry by performing matrix transformations and projecting 3d points
+    * to 2d window space. Then renders all children of this geometry.
+    ###
     render_3d: (geo) ->
         if geo.has_vertex()
             for f in [0...geo.faces.length]
@@ -516,6 +527,10 @@ class UTIL.renderer
                     replacement += @temp[j] * mat[i + (4 * j)]
                 dst[i] = replacement
 
+    ###*
+    * Given two points, returns a list of points that lie on the line which connects those
+    * two points.
+    ###
     sub_points: (last_point, point) ->
         mid = [(point[0] + last_point[0]) / 2, (point[1] + last_point[1]) / 2]
         length = vec2.distance last_point, point
@@ -531,6 +546,10 @@ class UTIL.renderer
 
         all_points
 
+    ###*
+    * Draws a line between two points. This line is not straight because it adds some noise
+    * to the endpoints and to the points in between.
+    ###
     draw_line: (p1, p2) ->
         @g.moveTo p1[0] + @noise(), p1[1] + @noise()
 
@@ -539,6 +558,9 @@ class UTIL.renderer
         for i in [0...inter_points.length]
             @g.lineTo inter_points[i][0] + @noise(), inter_points[i][1] + @noise()
 
+    ###*
+    * Projects a three dimensional point onto a two dimensional window space.
+    ###
     project_point: (xyz, pxy) ->
         x = xyz[0]
         y = xyz[1]
@@ -549,26 +571,41 @@ class UTIL.renderer
 
     noise: () -> (Math.random() - 0.5) * 2
 
+    ###*
+    * Incremental translation of 'world' geometry. Simulates moving the camera.
+    ###
     translate: (x, y, z) ->
         mat4.identity(@t)
         mat4.translate(@t, @t, [x, y, z])
         mat4.multiply(@world.glob_matrix, @world.glob_matrix, @t)
 
+    ###*
+    * Incremental rotation of 'world' geometry. Simulates rotating the camera.
+    ###
     rotate_x: (a) ->
         mat4.identity(@t)
         mat4.rotateX(@t, @t, a)
         mat4.multiply(@world.glob_matrix, @world.glob_matrix, @t)
 
+    ###*
+    * Incremental rotation of 'world' geometry. Simulates rotating the camera.
+    ###
     rotate_y: (a) ->
         mat4.identity(@t)
         mat4.rotateY(@t, @t, a)
         mat4.multiply(@world.glob_matrix, @world.glob_matrix, @t)
 
+    ###*
+    * Incremental rotation of 'world' geometry. Simulates rotating the camera.
+    ###
     rotate_z: (a) ->
         mat4.identity(@t)
         mat4.rotateZ(@t, @t, a)
         mat4.multiply(@world.glob_matrix, @world.glob_matrix, @t)
 
+    ###*
+    * Incremental scale of 'world' geometry. Simulates zooming..
+    ###
     scale: (x, y, z) ->
         mat4.identity(@t)
         mat4.scale(@t, @t, [x, y, z])
