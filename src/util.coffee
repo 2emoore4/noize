@@ -242,6 +242,13 @@ class UTIL.geometry_state
         @scale_vec = vec3.create()
         vec3.set(@scale_vec, 1, 1, 1)
 
+    copy: () ->
+        result = new UTIL.geometry_state()
+        vec3.copy(result.rotate_vec, @rotate_vec)
+        vec3.copy(result.translate_vec, @translate_vec)
+        vec3.copy(result.scale_vec, @scale_vec)
+        result
+
 ###*
 * Collection of attributes of a 2d geometry and functions to transform them.
 ###
@@ -276,6 +283,11 @@ class UTIL.geometry_2d
     ###
     reset_state: () ->
         @change_state("default")
+
+    create_state: (state_name) ->
+        @states[state_name] = @states["default"].copy()
+        for i in [0...@children.length]
+            @children[i].create_state(state_name)
 
     ###*
     * Transforms this gemoetry based on the three vectors contained in the given state. Rather
