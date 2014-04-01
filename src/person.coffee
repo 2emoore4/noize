@@ -204,11 +204,11 @@ class PERSON.person extends UTIL.geometry_2d
 
     shake_head: () ->
         `
-        for (var i = 0; i < 50; i++) {
+        for (var i = 0; i < 17; i++) {
             (function(head, i) {
                 setTimeout(function() {
-                    head.set_rotation_y(Math.sin(i / 5) / 1.4);
-                }, 20 * i);
+                    head.set_rotation_y(Math.sin(i / 1.7) / 1.4);
+                }, 60 * i);
             }).call(this, this.head, i);
         }
         `
@@ -216,11 +216,11 @@ class PERSON.person extends UTIL.geometry_2d
 
     nod_head: () ->
         `
-        for (var i = 0; i < 50; i++) {
+        for (var i = 0; i < 19; i++) {
             (function(head, i) {
                 setTimeout(function() {
-                    head.set_rotation_x(-0.5 - Math.sin(i / 5) / 1.4);
-                }, 20 * i);
+                    head.set_rotation_x(Math.sin(i / 1.7 + Math.PI) / 2.5 - 0.5);
+                }, 60 * i);
             }).call(this, this.head, i);
         }
         `
