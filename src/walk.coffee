@@ -26,10 +26,13 @@ init = () ->
 video_element = null # keep this in the outer scope
 window.onload = ->
     video_element = document.getElementById("videounder")
+    window.video_element = video_element
 
-video_start = ->
-    console.log('starting video playback')
-    video_element.play()
+video_toggle = ->
+    if video_element.paused
+        video_element.play()
+    else
+        video_element.pause()
 
 # list of things which happen at a certain
 # time of the video
@@ -90,7 +93,7 @@ window.onkeydown = (event) ->
     console.log(event.which)
     switch event.which
         when 32 # space
-            video_start()
+            video_toggle()
         when 37 # left arrow
             drawing_renderer.rotate_y(0.05)
         when 38 # right arrow
