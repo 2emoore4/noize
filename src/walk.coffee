@@ -1,6 +1,6 @@
 stage = new PIXI.Stage 0xFFFFFF
 
-w = 688
+w = 848
 h = 480
 
 transparent = true
