@@ -62,7 +62,7 @@ video_timing_effects = [
     what_happens: ->
         av_out()
 ,
-    trigger_time: 159.5
+    trigger_time: 160
     what_happens: ->
         av_in()
 ,
@@ -101,6 +101,16 @@ video_timing_effects = [
     trigger_time: 362
     what_happens: ->
         av_out()
+        av_out()
+        av_out()
+,
+    trigger_time: 388.6
+    what_happens: ->
+        av_out()
+,
+    trigger_time: 401.8
+    what_happens: ->
+        av_in()
 ]
 
 av_in = ->
