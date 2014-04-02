@@ -25,36 +25,47 @@ init = () ->
 # video
 video_element = null # keep this in the outer scope
 video_time = null
+song_element = null
 window.onload = ->
     video_element = document.getElementById("videounder")
     video_time = document.getElementById("time")
     window.video_element = video_element
+    song_element = document.getElementById("song")
+    window.song_element = song_element
 
 video_toggle = ->
     if video_element.paused
         video_element.play()
+        song_element.play()
     else
         video_element.pause()
+        song_element.pause()
 
 video_speed_up = ->
     i = 1
-    while i <= 5
+    while i < 5
         setTimeout(() ->
             video_element.playbackRate = i
+            song_element.playbackRate = (i + 5) / 5
         , 250 * (i - 1))
         i += 0.1
 
 video_speed_down = ->
     i = 5
-    while i >= 1
+    while i > 1.1
         setTimeout(() ->
             video_element.playbackRate = i
+            song_element.playbackRate = i
         , 250 * (5 - i))
         i -= 0.1
 
 # list of things which happen at a certain
 # time of the video
 video_timing_effects = [
+    trigger_time: 0
+    what_happens: ->
+        person.happy()
+,
     trigger_time: 20
     what_happens: ->
         video_speed_up()
@@ -90,14 +101,6 @@ video_timing_effects = [
     trigger_time: 160
     what_happens: ->
         av_in()
-,
-    trigger_time: 162
-    what_happens: ->
-        video_speed_up()
-,
-    trigger_time: 178
-    what_happens: ->
-        video_speed_down()
 ,
     trigger_time: 180
     what_happens: ->

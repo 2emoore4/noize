@@ -129,8 +129,8 @@ class PERSON.person extends UTIL.geometry_2d
         vec3.set(@l_brow.states["default"].translate_vec, -0.05, -0.5, 0)
         vec3.set(@l_brow.states["default"].rotate_vec, 0, 0, -0.4)
         vec3.set(@mouth.states["default"].translate_vec, 0, -0.2, 0)
-        vec3.set(@states["default"].scale_vec, 1.8, 1.8, 1.8)
-        vec3.set(@states["default"].translate_vec, 8, 2, 0)
+        vec3.set(@states["default"].scale_vec, 1.9, 1.9, 1.9)
+        vec3.set(@states["default"].translate_vec, 8, 2.5, 0)
         vec3.set(@states["default"].rotate_vec, 0, -Math.PI / 2, 0)
         @reset_state()
 
