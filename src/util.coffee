@@ -449,7 +449,7 @@ class UTIL.geometry_2d
 class UTIL.renderer
     constructor: (@g, @w, @h) ->
         @world = new UTIL.geometry()
-        @FL = 10
+        @FL = 4
         @point0 = vec3.create()
         @point1 = vec3.create()
         @a = vec2.create()

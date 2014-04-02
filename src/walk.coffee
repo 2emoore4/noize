@@ -53,7 +53,73 @@ video_timing_effects = [
     what_happens: ->
         # and after waiting 3 seconds, they're mad as all get out.
         person.angry()
+,
+    trigger_time: 115
+    what_happens: ->
+        av_in()
+,
+    trigger_time: 131
+    what_happens: ->
+        av_out()
+,
+    trigger_time: 159.5
+    what_happens: ->
+        av_in()
+,
+    trigger_time: 180
+    what_happens: ->
+        av_out()
+,
+    trigger_time: 225.5
+    what_happens: ->
+        av_in()
+,
+    trigger_time: 233.3
+    what_happens: ->
+        av_out()
+,
+    trigger_time: 246.5
+    what_happens: ->
+        av_in()
+,
+    trigger_time: 257.5
+    what_happens: ->
+        av_out()
+,
+    trigger_time: 285.5
+    what_happens: ->
+        av_in()
+,
+    trigger_time: 294
+    what_happens: ->
+        av_out()
+,
+    trigger_time: 353
+    what_happens: ->
+        av_in()
+,
+    trigger_time: 362
+    what_happens: ->
+        av_out()
 ]
+
+av_in = ->
+    i = 0
+    while i < 1.57
+        setTimeout(() ->
+            r.rotate_y(0.01)
+        , 500 * i)
+        i += 0.01
+
+window.av_in = av_in
+
+av_out = ->
+    i = 0
+    while i < 1.57
+        setTimeout(() ->
+            r.rotate_y(-0.01)
+        , 500 * i)
+        i += 0.01
 
 # callback called before every rendering update
 # handles synchronizing animation with video
@@ -74,6 +140,7 @@ video_effect = ->
 person = null
 init_person = () ->
     person = new PERSON.person()
+
     window.person = person
 
     drawing_renderer.world.add(person)
@@ -98,13 +165,13 @@ window.onkeydown = (event) ->
         when 32 # space
             video_toggle()
         when 37 # left arrow
-            video_element.currentTime -= 1
+            video_element.currentTime -= 0.2
         when 38 # up arrow
-            drawing_renderer.rotate_x(-0.05)
-        when 39 # right arrow
             video_element.currentTime += 1
+        when 39 # right arrow
+            video_element.currentTime += 0.2
         when 40 # down arrow
-            drawing_renderer.rotate_x(0.05)
+            video_element.currentTime -= 1
         when 65 # 'a'
             person.angry()
         when 72 # 'h'
