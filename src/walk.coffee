@@ -36,23 +36,40 @@ video_toggle = ->
     else
         video_element.pause()
 
+video_speed_up = ->
+    i = 1
+    while i <= 5
+        setTimeout(() ->
+            video_element.playbackRate = i
+        , 250 * (i - 1))
+        i += 0.1
+
+video_speed_down = ->
+    i = 5
+    while i >= 1
+        setTimeout(() ->
+            video_element.playbackRate = i
+        , 250 * (5 - i))
+        i -= 0.1
+
 # list of things which happen at a certain
 # time of the video
 video_timing_effects = [
-    trigger_time: 0
+    trigger_time: 20
     what_happens: ->
-        # person starts happy
-        person.happy()
+        video_speed_up()
 ,
-    trigger_time: 1
+    trigger_time: 59
     what_happens: ->
-        # but after a second they get sad
-        person.sad()
+        video_speed_down()
 ,
-    trigger_time: 3
+    trigger_time: 72
     what_happens: ->
-        # and after waiting 3 seconds, they're mad as all get out.
-        person.angry()
+        video_speed_up()
+,
+    trigger_time: 113
+    what_happens: ->
+        video_speed_down()
 ,
     trigger_time: 115
     what_happens: ->
@@ -62,21 +79,53 @@ video_timing_effects = [
     what_happens: ->
         av_out()
 ,
+    trigger_time: 133
+    what_happens: ->
+        video_speed_up()
+,
+    trigger_time: 158
+    what_happens: ->
+        video_speed_down()
+,
     trigger_time: 160
     what_happens: ->
         av_in()
+,
+    trigger_time: 162
+    what_happens: ->
+        video_speed_up()
+,
+    trigger_time: 178
+    what_happens: ->
+        video_speed_down()
 ,
     trigger_time: 180
     what_happens: ->
         av_out()
 ,
-    trigger_time: 225.5
+    trigger_time: 182
+    what_happens: ->
+        video_speed_up()
+,
+    trigger_time: 223
+    what_happens: ->
+        video_speed_down()
+,
+    trigger_time: 226
     what_happens: ->
         av_in()
 ,
     trigger_time: 233.3
     what_happens: ->
         av_out()
+,
+    trigger_time: 235
+    what_happens: ->
+        video_speed_up()
+,
+    trigger_time: 244
+    what_happens: ->
+        video_speed_down()
 ,
     trigger_time: 246.5
     what_happens: ->
@@ -86,6 +135,14 @@ video_timing_effects = [
     what_happens: ->
         av_out()
 ,
+    trigger_time: 259
+    what_happens: ->
+        video_speed_up()
+,
+    trigger_time: 283
+    what_happens: ->
+        video_speed_down()
+,
     trigger_time: 285.5
     what_happens: ->
         av_in()
@@ -93,6 +150,14 @@ video_timing_effects = [
     trigger_time: 294
     what_happens: ->
         av_out()
+,
+    trigger_time: 296
+    what_happens: ->
+        video_speed_up()
+,
+    trigger_time: 351
+    what_happens: ->
+        video_speed_down()
 ,
     trigger_time: 353
     what_happens: ->
@@ -103,6 +168,14 @@ video_timing_effects = [
         av_out()
         av_out()
         av_out()
+,
+    trigger_time: 364
+    what_happens: ->
+        video_speed_up()
+,
+    trigger_time: 386
+    what_happens: ->
+        video_speed_down()
 ,
     trigger_time: 388.6
     what_happens: ->
