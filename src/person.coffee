@@ -4,14 +4,12 @@ class PERSON.person extends UTIL.geometry_2d
     constructor: () ->
         @frame = 0
         @head_rotation = vec3.create()
-        @head_rotation[0] = -1.1
-        @energy = 100
-        @wave_speed = 4
-        @wave_position = -1.75
-        @angry_wave = false
+        @head_rotation[0] = 0
+        @energy = 10
         @walking = false
         @walk_speed = 3
         @sync_breaker = Math.random() * 3
+        @head_anim = false
 
         super()
 
@@ -102,9 +100,9 @@ class PERSON.person extends UTIL.geometry_2d
         @head.add(@l_brow)
 
         @mouth = new UTIL.geometry_2d()
-        @mouth.add_vertex([-0.15, 0.05])
+        @mouth.add_vertex([-0.15, -0.05])
         @mouth.add_vertex([0, 0])
-        @mouth.add_vertex([0.15, 0.05])
+        @mouth.add_vertex([0.15, -0.05])
         @head.add(@mouth)
 
         vec3.set(@hip.states["default"].translate_vec, 0, 0.5, 0)
@@ -125,9 +123,7 @@ class PERSON.person extends UTIL.geometry_2d
         vec3.set(@r_fore.states["default"].rotate_vec, 0.5, 0, -0.2)
         vec3.set(@head.states["default"].translate_vec, 0, -0.5, 0)
         vec3.set(@r_brow.states["default"].translate_vec, 0.05, -0.5, 0)
-        vec3.set(@r_brow.states["default"].rotate_vec, 0, 0, 0.4)
         vec3.set(@l_brow.states["default"].translate_vec, -0.05, -0.5, 0)
-        vec3.set(@l_brow.states["default"].rotate_vec, 0, 0, -0.4)
         vec3.set(@mouth.states["default"].translate_vec, 0, -0.2, 0)
         vec3.set(@states["default"].scale_vec, 1.9, 1.9, 1.9)
         vec3.set(@states["default"].translate_vec, 8, 2.5, 0)
@@ -161,10 +157,28 @@ class PERSON.person extends UTIL.geometry_2d
         @l_arm.set_rotation_z(1.4 + noise.perlin2(@frame / @energy, @frame / @energy) * 0.2)
 
     update_wave: () ->
-        if @angry_wave
-            @l_fore.set_rotation_x(@wave_position + Math.sin(@frame / @wave_speed) / 2)
-        else
-            @l_fore.set_rotation_z(@wave_position + Math.sin(@frame / @wave_speed) / 2)
+        @l_fore.set_rotation_z(@wave_position + Math.sin(@frame / @wave_speed) / 2)
+
+    wave: () ->
+        @r_arm.set_rotation_z(-0.3)
+        @r_fore.set_rotation_x(0)
+        `
+        for (var i = 0; i < 30; i++) {
+            (function(fore, i) {
+                setTimeout(function() {
+                    fore.set_rotation_z(1.37 + Math.sin(i / 1.7) / 1.4);
+                }, 60 * i);
+            }).call(this, this.r_fore, i);
+        }
+        (function(arm, fore) {
+            setTimeout(function() {
+                arm.set_rotation_z(-1.4);
+                fore.set_rotation_x(0.5);
+                fore.set_rotation_z(-0.2);
+            }, 1800);
+        }).call(this, this.r_arm, this.r_fore);
+        `
+        null
 
     update_torso: () ->
         @torso.set_rotation_x(noise.perlin2(@frame / @energy, @frame / @energy) * 0.1)
@@ -209,6 +223,8 @@ class PERSON.person extends UTIL.geometry_2d
     do_stuff: () ->
         if @walking
             @walk()
+
+        if !@head_anim
             @update_head()
 
         @frame += 1
@@ -219,7 +235,7 @@ class PERSON.person extends UTIL.geometry_2d
             (function(head, i) {
                 setTimeout(function() {
                     head.set_rotation_y(Math.sin(i / 1.7) / 1.4);
-                }, 60 * i);
+                }, 40 * i);
             }).call(this, this.head, i);
         }
         `
@@ -231,7 +247,7 @@ class PERSON.person extends UTIL.geometry_2d
             (function(head, i) {
                 setTimeout(function() {
                     head.set_rotation_x(Math.sin(i / 1.7 + Math.PI) / 2.5 - 0.5);
-                }, 60 * i);
+                }, 40 * i);
             }).call(this, this.head, i);
         }
         `

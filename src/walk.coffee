@@ -26,12 +26,14 @@ init = () ->
 video_element = null # keep this in the outer scope
 video_time = null
 song_element = null
+vibe_element = null
 window.onload = ->
     video_element = document.getElementById("videounder")
     video_time = document.getElementById("time")
     window.video_element = video_element
     song_element = document.getElementById("song")
-    window.song_element = song_element
+    vibe_element = document.getElementById("vibe")
+    window.vibe = vibe_element
 
 video_toggle = ->
     if video_element.paused
@@ -66,6 +68,10 @@ video_timing_effects = [
     what_happens: ->
         person.happy()
 ,
+    trigger_time: 10.5
+    what_happens: ->
+        vibe_element.play()
+,
     trigger_time: 20
     what_happens: ->
         video_speed_up()
@@ -85,6 +91,10 @@ video_timing_effects = [
     trigger_time: 115
     what_happens: ->
         av_in()
+,
+    trigger_time: 121
+    what_happens: ->
+        person.wave()
 ,
     trigger_time: 131
     what_happens: ->
@@ -260,6 +270,8 @@ window.onkeydown = (event) ->
             video_element.currentTime -= 1
         when 65 # 'a'
             person.angry()
+        when 71 # 'g'
+            person.wave()
         when 72 # 'h'
             person.happy()
         when 74 # 'j'
@@ -267,7 +279,11 @@ window.onkeydown = (event) ->
         when 75 # 'k'
             person.stand()
         when 78 # 'n'
+            person.head_anim = true
             person.shake_head()
+            setTimeout(() ->
+                person.head_anim = false
+            , 680)
         when 83 # 's'
             person.sad()
         when 85 # 'u'
@@ -275,6 +291,10 @@ window.onkeydown = (event) ->
         when 87 # 'w'
             person.toggle_walk()
         when 89 # 'y'
+            person.head_anim = true
             person.nod_head()
+            setTimeout(() ->
+                person.head_anim = false
+            , 760)
 
 init()
