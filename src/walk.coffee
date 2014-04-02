@@ -24,8 +24,10 @@ init = () ->
 
 # video
 video_element = null # keep this in the outer scope
+video_time = null
 window.onload = ->
     video_element = document.getElementById("videounder")
+    video_time = document.getElementById("time")
     window.video_element = video_element
 
 video_toggle = ->
@@ -62,6 +64,7 @@ video_effect = ->
         return
 
     ct = video_element.currentTime
+    video_time.innerText = ct
 
     for vte in video_timing_effects
         if ct > vte.trigger_time and not vte.already_happened
@@ -95,11 +98,11 @@ window.onkeydown = (event) ->
         when 32 # space
             video_toggle()
         when 37 # left arrow
-            drawing_renderer.rotate_y(0.05)
-        when 38 # right arrow
+            video_element.currentTime -= 1
+        when 38 # up arrow
             drawing_renderer.rotate_x(-0.05)
-        when 39 # up arrow
-            drawing_renderer.rotate_y(-0.05)
+        when 39 # right arrow
+            video_element.currentTime += 1
         when 40 # down arrow
             drawing_renderer.rotate_x(0.05)
         when 65 # 'a'
