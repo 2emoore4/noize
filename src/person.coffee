@@ -5,7 +5,7 @@ class PERSON.person extends UTIL.geometry_2d
         @frame = 0
         @head_rotation = vec3.create()
         @head_rotation[0] = 0
-        @energy = 10
+        @energy = 40
         @walking = false
         @walk_speed = 3
         @sync_breaker = Math.random() * 3
@@ -270,7 +270,7 @@ class PERSON.person extends UTIL.geometry_2d
 
     happy: () ->
         @angry_wave = false
-        @energy = 10
+        @energy = 40
         @l_brow.set_rotation_z(0)
         @r_brow.set_rotation_z(0)
         @wave_speed = 2

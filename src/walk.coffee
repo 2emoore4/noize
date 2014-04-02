@@ -171,6 +171,10 @@ video_timing_effects = [
     what_happens: ->
         av_in()
 ,
+    trigger_time: 250
+    what_happens: ->
+        person.angry()
+,
     trigger_time: 257.5
     what_happens: ->
         av_out()
@@ -186,6 +190,24 @@ video_timing_effects = [
     trigger_time: 285.5
     what_happens: ->
         av_in()
+        person.sad()
+,
+    trigger_time: 287.5
+    what_happens: ->
+        person.toggle_walk()
+,
+    trigger_time: 289
+    what_happens: ->
+        person.sit()
+        person.happy()
+,
+    trigger_time: 290
+    what_happens: ->
+        shake()
+,
+    trigger_time: 292
+    what_happens: ->
+        nod()
 ,
     trigger_time: 294
     what_happens: ->
@@ -220,6 +242,22 @@ video_timing_effects = [
     trigger_time: 388.6
     what_happens: ->
         av_out()
+,
+    trigger_time: 392
+    what_happens: ->
+        person.stand()
+,
+    trigger_time: 394
+    what_happens: ->
+        person.wave()
+,
+    trigger_time: 396
+    what_happens: ->
+        person.rotate_y(Math.PI / 2)
+,
+    trigger_time: 397
+    what_happens: ->
+        person.toggle_walk()
 ,
     trigger_time: 401.8
     what_happens: ->
