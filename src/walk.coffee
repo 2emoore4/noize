@@ -75,6 +75,8 @@ p = () ->
     d2.pause()
     d3.pause()
     d4.pause()
+    d5.pause()
+    d6.pause()
     vibe.pause()
 
 window.p = p
@@ -85,7 +87,7 @@ specialGoto = (vidframe) ->
         goto vidframe
         p()
 
-    setTimeout later, 500
+    setTimeout later, 300
 
 window.specialGoto = specialGoto
 
