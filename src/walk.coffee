@@ -246,7 +246,9 @@ video_timing_effects = [
 ,
     trigger_time: 389
     what_happens: ->
-        av_in()
+        av_180()
+        # this is an av_in from the left because we pulled a 180
+        av_out()
 ,
     trigger_time: 392
     what_happens: ->
@@ -267,7 +269,8 @@ video_timing_effects = [
 ,
     trigger_time: 401.8
     what_happens: ->
-        av_out()
+        # this is an av_out to the left because we pulled a 180 earlier
+        av_in()
 ]
 
 av_in = ->
@@ -287,6 +290,13 @@ av_out = ->
             r.rotate_y(-0.01)
         , 500 * i)
         i += 0.01
+
+window.av_out = av_out
+
+av_180 = ->
+    r.rotate_y(Math.PI)
+
+window.av_180 = av_180
 
 # callback called before every rendering update
 # handles synchronizing animation with video
