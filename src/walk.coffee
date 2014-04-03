@@ -28,13 +28,26 @@ video_time = null
 song_element = null
 vibe_element = null
 dialogs = [ null, null, null, null, null]
+song_unducked_volume = 0.15
+song_ducked_volume = 0.05
 window.onload = ->
     video_element = document.getElementById("videounder")
     video_time = document.getElementById("time")
     song_element = document.getElementById("song")
-    song_element.volume = 0.1
+    song_element.volume = song_unducked_volume
     vibe_element = document.getElementById("vibe")
     vibe_element.volume = 0.5
+
+# dialog durations in seconds
+dialog_durations =
+    'd1': 42
+    'd2': 17
+    'd3': 14
+    'd4': 5
+    'd5': 14
+    'd6': 6
+
+dialog_start_times =
 
 pause_all_dialog = () ->
     for d in dialogs
@@ -99,6 +112,11 @@ video_timing_effects = [
     what_happens: ->
         person.happy()
         d1.play()
+        duck_on()
+,
+    trigger_time: 0 + dialog_durations['d1']
+    what_happens: ->
+        duck_off()
 ,
     trigger_time: 10.5
     what_happens: ->
@@ -119,6 +137,11 @@ video_timing_effects = [
     trigger_time: 113
     what_happens: ->
         d2.play()
+        duck_on()
+,
+    trigger_time: 113 + dialog_durations['d2']
+    what_happens: ->
+        duck_off()
 ,
     trigger_time: 115
     what_happens: ->
@@ -151,7 +174,12 @@ video_timing_effects = [
     trigger_time: 160
     what_happens: ->
         d3.play()
+        duck_on()
         av_in()
+,
+    trigger_time: 160 + dialog_durations['d3']
+    what_happens: ->
+        duck_off()
 ,
     trigger_time: 162
     what_happens: ->
@@ -176,6 +204,11 @@ video_timing_effects = [
     trigger_time: 176
     what_happens: ->
         d4.play()
+        duck_on()
+,
+    trigger_time: 176 + dialog_durations['d4']
+    what_happens: ->
+        duck_off()
 ,
     trigger_time: 181
     what_happens: ->
@@ -216,6 +249,11 @@ video_timing_effects = [
     trigger_time: 247
     what_happens: ->
         d5.play()
+        duck_on()
+,
+    trigger_time: 247 + dialog_durations['d5']
+    what_happens: ->
+        duck_off()
 ,
     trigger_time: 249.5
     what_happens: ->
@@ -266,6 +304,11 @@ video_timing_effects = [
     trigger_time: 392
     what_happens: ->
         d6.play()
+        duck_on()
+,
+    trigger_time: 392 + dialog_durations['d6']
+    what_happens: ->
+        duck_off()
 ,
     trigger_time: 394
     what_happens: ->
@@ -315,6 +358,15 @@ av_180 = ->
     r.rotate_y(Math.PI)
 
 window.av_180 = av_180
+
+# audio ducking
+duck_on = ->
+    console.log "duck on"
+    song_element.volume = song_ducked_volume
+
+duck_off = ->
+    console.log "duck off"
+    song_element.volume = song_unducked_volume
 
 # callback called before every rendering update
 # handles synchronizing animation with video
