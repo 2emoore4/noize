@@ -131,6 +131,10 @@ video_timing_effects = [
     what_happens: ->
         person.wave()
 ,
+    trigger_time: 124
+    what_happens: ->
+        shake()
+,
     trigger_time: 131
     what_happens: ->
         av_out()
@@ -148,27 +152,31 @@ video_timing_effects = [
         d3.play()
         av_in()
 ,
-    trigger_time: 167
-    what_happens: ->
-        nod()
-,
-    trigger_time: 170
+    trigger_time: 162
     what_happens: ->
         person.sit()
 ,
-    trigger_time: 172
+    trigger_time: 165
+    what_happens: ->
+        nod()
+,
+    trigger_time: 168
     what_happens: ->
         person.shrug_shoulders()
 ,
-    trigger_time: 174.2
+    trigger_time: 173
+    what_happens: ->
+        person.stand()
+,
+    trigger_time: 173.5
+    what_happens: ->
+        person.toggle_walk()
+,
+    trigger_time: 176
     what_happens: ->
         d4.play()
 ,
-#    trigger_time: 173
-#    what_happens: ->
-#        video_element.currentTime = 178
-#,
-    trigger_time: 179
+    trigger_time: 181
     what_happens: ->
         d4.pause()
 ,
@@ -187,14 +195,6 @@ video_timing_effects = [
     trigger_time: 226
     what_happens: ->
         av_in()
-,
-    trigger_time: 227
-    what_happens: ->
-        person.stand()
-,
-    trigger_time: 227.5
-    what_happens: ->
-        person.toggle_walk()
 ,
     trigger_time: 233.3
     what_happens: ->
