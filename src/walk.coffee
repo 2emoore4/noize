@@ -245,11 +245,11 @@ video_timing_effects = [
     what_happens: ->
         person.toggle_walk()
         person.happy()
-        av_in()
+        av_in(true)
 ,
     trigger_time: 362
     what_happens: ->
-        av_out()
+        av_out(true)
 ,
     trigger_time: 386
     what_happens: ->
@@ -289,22 +289,24 @@ video_timing_effects = [
         av_in()
 ]
 
-av_in = ->
+av_in = (fast) ->
+    speed = if fast then 100 else 500
     i = 0
     while i < 1.57
         setTimeout(() ->
             r.rotate_y(0.01)
-        , 500 * i)
+        , speed * i)
         i += 0.01
 
 window.av_in = av_in
 
-av_out = ->
+av_out = (fast) ->
+    speed = if fast then 100 else 500
     i = 0
     while i < 1.57
         setTimeout(() ->
             r.rotate_y(-0.01)
-        , 500 * i)
+        , speed * i)
         i += 0.01
 
 window.av_out = av_out
