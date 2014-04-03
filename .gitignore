@@ -3,3 +3,4 @@ third_party
 node_modules
 .DS_Store
 lib
+media
