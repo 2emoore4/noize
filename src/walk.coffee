@@ -228,43 +228,9 @@ video_timing_effects = [
     what_happens: ->
         video_speed_up()
 ,
-    trigger_time: 283
+    trigger_time: 285
     what_happens: ->
-        video_speed_down()
-,
-    trigger_time: 285.5
-    what_happens: ->
-        av_in()
-        person.sad()
-,
-    trigger_time: 287.5
-    what_happens: ->
-        person.toggle_walk()
-,
-    trigger_time: 289
-    what_happens: ->
-        person.sit()
-        person.happy()
-,
-    trigger_time: 290
-    what_happens: ->
-        shake()
-,
-    trigger_time: 292
-    what_happens: ->
-        nod()
-,
-    trigger_time: 294
-    what_happens: ->
-        av_out()
-,
-    trigger_time: 296
-    what_happens: ->
-        video_speed_up()
-,
-    trigger_time: 351
-    what_happens: ->
-        video_speed_down()
+        video_element.currentTime = 295
 ,
     trigger_time: 353
     what_happens: ->
@@ -273,20 +239,14 @@ video_timing_effects = [
     trigger_time: 362
     what_happens: ->
         av_out()
-        av_out()
-        av_out()
-,
-    trigger_time: 364
-    what_happens: ->
-        video_speed_up()
 ,
     trigger_time: 386
     what_happens: ->
         video_speed_down()
 ,
-    trigger_time: 388.6
+    trigger_time: 389
     what_happens: ->
-        av_out()
+        av_in()
 ,
     trigger_time: 392
     what_happens: ->
@@ -307,7 +267,7 @@ video_timing_effects = [
 ,
     trigger_time: 401.8
     what_happens: ->
-        av_in()
+        av_out()
 ]
 
 av_in = ->
