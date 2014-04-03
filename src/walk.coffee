@@ -34,6 +34,7 @@ window.onload = ->
     song_element = document.getElementById("song")
     song_element.volume = 0.1
     vibe_element = document.getElementById("vibe")
+    vibe_element.volume = 0.5
 
 pause_all_dialog = () ->
     for d in dialogs
@@ -208,7 +209,7 @@ video_timing_effects = [
     what_happens: ->
         video_speed_down()
 ,
-    trigger_time: 246.5
+    trigger_time: 247
     what_happens: ->
         av_in()
 ,
@@ -216,7 +217,7 @@ video_timing_effects = [
     what_happens: ->
         d5.play()
 ,
-    trigger_time: 250
+    trigger_time: 249.5
     what_happens: ->
         person.angry()
 ,
@@ -276,7 +277,7 @@ video_timing_effects = [
 ,
     trigger_time: 399
     what_happens: ->
-        person.rotate_y(Math.PI / 2)
+        person.rotate_y(-Math.PI / 2)
         person.toggle_walk()
 ,
     trigger_time: 400
