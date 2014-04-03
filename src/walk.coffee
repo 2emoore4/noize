@@ -79,6 +79,16 @@ p = () ->
 
 window.p = p
 
+specialGoto = (vidframe) ->
+    goto vidframe
+    later = ->
+        goto vidframe
+        p()
+
+    setTimeout later, 500
+
+window.specialGoto = specialGoto
+
 # list of things which happen at a certain
 # time of the video
 video_timing_effects = [
