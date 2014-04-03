@@ -27,11 +27,17 @@ video_element = null # keep this in the outer scope
 video_time = null
 song_element = null
 vibe_element = null
+dialogs = [ null, null, null, null, null]
 window.onload = ->
     video_element = document.getElementById("videounder")
     video_time = document.getElementById("time")
     song_element = document.getElementById("song")
+    song_element.volume = 0.1
     vibe_element = document.getElementById("vibe")
+
+pause_all_dialog = () ->
+    for d in dialogs
+        d?.pause()
 
 goto = (time) ->
     video_element.currentTime = time
@@ -64,24 +70,30 @@ video_speed_down = ->
         , 250 * (5 - i))
         i -= 0.1
 
+p = () ->
+    d1.pause()
+    d2.pause()
+    d3.pause()
+    d4.pause()
+    vibe.pause()
+
+window.p = p
+
 # list of things which happen at a certain
 # time of the video
 video_timing_effects = [
     trigger_time: 0
     what_happens: ->
         person.happy()
+        d1.play()
 ,
     trigger_time: 10.5
     what_happens: ->
         vibe_element.play()
 ,
-    trigger_time: 20
+    trigger_time: 25
     what_happens: ->
-        video_speed_up()
-,
-    trigger_time: 59
-    what_happens: ->
-        video_speed_down()
+        video_element.currentTime = 50
 ,
     trigger_time: 72
     what_happens: ->
@@ -90,6 +102,10 @@ video_timing_effects = [
     trigger_time: 113
     what_happens: ->
         video_speed_down()
+,
+    trigger_time: 113
+    what_happens: ->
+        d2.play()
 ,
     trigger_time: 115
     what_happens: ->
@@ -117,6 +133,7 @@ video_timing_effects = [
 ,
     trigger_time: 160
     what_happens: ->
+        d3.play()
         av_in()
 ,
     trigger_time: 167
@@ -130,6 +147,18 @@ video_timing_effects = [
     trigger_time: 172
     what_happens: ->
         person.shrug_shoulders()
+,
+    trigger_time: 174.2
+    what_happens: ->
+        d4.play()
+,
+#    trigger_time: 173
+#    what_happens: ->
+#        video_element.currentTime = 178
+#,
+    trigger_time: 179
+    what_happens: ->
+        d4.pause()
 ,
     trigger_time: 180
     what_happens: ->
@@ -170,6 +199,10 @@ video_timing_effects = [
     trigger_time: 246.5
     what_happens: ->
         av_in()
+,
+    trigger_time: 247
+    what_happens: ->
+        d5.play()
 ,
     trigger_time: 250
     what_happens: ->
@@ -246,6 +279,7 @@ video_timing_effects = [
     trigger_time: 392
     what_happens: ->
         person.stand()
+        d6.play()
 ,
     trigger_time: 394
     what_happens: ->

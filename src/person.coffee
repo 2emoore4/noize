@@ -156,9 +156,6 @@ class PERSON.person extends UTIL.geometry_2d
         @l_arm.set_rotation_y(noise.perlin2(@frame / @energy, @frame / @energy) * 1)
         @l_arm.set_rotation_z(1.4 + noise.perlin2(@frame / @energy, @frame / @energy) * 0.2)
 
-    update_wave: () ->
-        @l_fore.set_rotation_z(@wave_position + Math.sin(@frame / @wave_speed) / 2)
-
     wave: () ->
         @r_arm.set_rotation_z(-0.3)
         @r_fore.set_rotation_x(0)
