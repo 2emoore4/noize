@@ -220,6 +220,14 @@ video_timing_effects = [
     what_happens: ->
         person.angry()
 ,
+    trigger_time: 255
+    what_happens: ->
+        person.sad()
+,
+    trigger_time: 255.5
+    what_happens: ->
+        shake()
+,
     trigger_time: 257.5
     what_happens: ->
         av_out()
@@ -234,6 +242,8 @@ video_timing_effects = [
 ,
     trigger_time: 353
     what_happens: ->
+        person.toggle_walk()
+        person.happy()
         av_in()
 ,
     trigger_time: 362
@@ -246,26 +256,31 @@ video_timing_effects = [
 ,
     trigger_time: 389
     what_happens: ->
+        person.stand()
+        person.happy()
         av_180()
         # this is an av_in from the left because we pulled a 180
         av_out()
 ,
     trigger_time: 392
     what_happens: ->
-        person.stand()
         d6.play()
 ,
     trigger_time: 394
     what_happens: ->
-        person.wave()
+        nod()
 ,
     trigger_time: 396
     what_happens: ->
-        person.rotate_y(Math.PI / 2)
+        person.wave()
 ,
-    trigger_time: 397
+    trigger_time: 399
     what_happens: ->
+        person.rotate_y(Math.PI / 2)
         person.toggle_walk()
+,
+    trigger_time: 400
+    what_happens: ->
 ,
     trigger_time: 401.8
     what_happens: ->
