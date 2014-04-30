@@ -271,6 +271,15 @@ class UTIL.geometry_2d
         @states = new Object()
         @states["default"] = new UTIL.geometry_state()
 
+    regular_polygon: (vertices) ->
+        for i in [0..vertices]
+            angle = (2 * Math.PI) * (i / vertices)
+            x = Math.sin(angle)
+            y = Math.cos(angle)
+            @add_vertex [x, y]
+
+        this
+
     ###*
     * Adds two-dimensional vertex to list of vertices, with default z value of 0. All vertices
     * start with this z value, so that they are 'drawn flat'.

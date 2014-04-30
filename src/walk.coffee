@@ -29,7 +29,7 @@ song_element = null
 vibe_element = null
 dialogs = [ null, null, null, null, null]
 song_unducked_volume = 0.15
-song_ducked_volume = 0.05
+song_ducked_volume = 0.15
 window.onload = ->
     video_element = document.getElementById("videounder")
     video_time = document.getElementById("time")
@@ -40,7 +40,7 @@ window.onload = ->
 
 # dialog durations in seconds
 dialog_durations =
-    'd1': 42
+    'd1': 64
     'd2': 17
     'd3': 14
     'd4': 5
