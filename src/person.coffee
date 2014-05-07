@@ -125,6 +125,7 @@ class PERSON.person extends UTIL.geometry_2d
         vec3.set(@r_brow.states["default"].translate_vec, 0.05, -0.5, 0)
         vec3.set(@l_brow.states["default"].translate_vec, -0.05, -0.5, 0)
         vec3.set(@mouth.states["default"].translate_vec, 0, -0.2, 0)
+        vec3.set(@states["default"].translate_vec, 0, 0, -4)
         @reset_state()
 
         @create_state("sitting")
