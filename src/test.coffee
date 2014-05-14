@@ -1,4 +1,10 @@
+<<<<<<< HEAD
 stage = new PIXI.Stage 0xECF0F1
+=======
+# I used PIXI.js originally because it handles sprites well
+# I'll be making the transition to hook directly into webgl
+stage = new PIXI.Stage 0xFFFFFF
+>>>>>>> 002b45782834d74f77de995187110f5d8914ce2c
 
 w = 630
 h = 400
@@ -6,7 +12,6 @@ h = 400
 renderer = new PIXI.WebGLRenderer w, h, null, null, true
 graphics = new PIXI.Graphics
 drawing_renderer = new UTIL.renderer(graphics, w, h)
-window.r = drawing_renderer
 
 noise.seed(Math.random())
 
@@ -28,6 +33,7 @@ window.fish_init = () ->
 
         init = true
 
+# runs at interval defined above. this is where all 3d stuff happens.
 render_graphics = () ->
     graphics.clear()
     graphics.lineStyle 3, 0x5c6274
