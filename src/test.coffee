@@ -1,7 +1,7 @@
-stage = new PIXI.Stage 0xFFFFFF
+stage = new PIXI.Stage 0xECF0F1
 
-w = 688
-h = 480
+w = 630
+h = 400
 
 renderer = new PIXI.WebGLRenderer w, h, null, null, true
 graphics = new PIXI.Graphics
@@ -11,18 +11,22 @@ window.r = drawing_renderer
 noise.seed(Math.random())
 
 square = null
-init = () ->
-    document.body.appendChild renderer.view
+init = false
+window.fish_init = () ->
+    if !init
+        document.getElementById("fish").appendChild renderer.view
 
-    square = new UTIL.geometry_2d().regular_polygon(500)
-    vec3.set(square.states["default"].scale_vec, 1, 1, 1)
-    square.reset_state()
-    drawing_renderer.world.add(square)
+        square = new FISH.fish()
+        window.fish = square
+        vec3.set(square.states["default"].scale_vec, 1, 1, 1)
+        drawing_renderer.world.add(square)
 
-    stage.addChild graphics
+        stage.addChild graphics
 
-    setInterval render_graphics, 60
-    requestAnimationFrame animate
+        setInterval render_graphics, 60
+        requestAnimationFrame animate
+
+        init = true
 
 render_graphics = () ->
     graphics.clear()
@@ -31,25 +35,6 @@ render_graphics = () ->
     drawing_renderer.render_world()
 
 animate = () ->
-    square.rotate_y(0.01)
-    square.rotate_x(0.01)
+    square.do_stuff()
     renderer.render stage
     requestAnimationFrame animate
-
-window.onkeydown = (event) ->
-    console.log(event.which)
-    switch event.which
-        when 37
-            drawing_renderer.rotate_y(0.05)
-        when 38
-            drawing_renderer.rotate_x(-0.05)
-        when 39
-            drawing_renderer.rotate_y(-0.05)
-        when 40
-            drawing_renderer.rotate_x(0.05)
-        when 88
-            drawing_renderer.translate(0, 0, 1)
-        when 90
-            drawing_renderer.translate(0, 0, -1)
-
-init()
